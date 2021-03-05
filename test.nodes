@@ -1,0 +1,43 @@
+shader Matcap {
+    func VectorScale(vector: Vector, fac: Value) -> (vector: Vector) {
+        let ax = Math.Multiply(vec.x, fac)
+        let ay = Math.Multiply(vec.y, fac)
+        let az = Math.Multiply(vec.z, fac)
+        output vector = CombineXYZ(ax, ay, az)
+    }
+
+    func MatcapMapping() -> (vector: Vector) {
+        input Tex: TextureCoordinate
+        input Cam: CameraData
+        input Geo: Geometry
+
+        let texmap = Mapping(vector: Tex.camera)
+        let scale = Vector(-2, -2, -1)
+        texmap = Mapping(vector: texmap, scale: scale, vector_type: "Normal")
+
+        let geoNorm = VectorTransform(vector: geo.normal, vector_type: "Normal", convert_to: "Camera")
+        let viewNorm = VMath.Dot(cam.view_vector, geoNorm)
+        let texmap_scaled = VectorScale(texmap, viewNorm)
+
+        let geomap = Mapping(vector: geoNorm, scale: Vector(1, 1, 0))
+        geomap = Mapping(vector: geomap, location: Vector(0.5, 0.5, 0), scale: Vector(.5, .5, 1))
+
+        output vector = VMath.Add(texmap_scaled, geomap)
+
+    }
+    
+    let mapping = MatcapMapping()
+    let tex = ImageTexture(
+        vector: mapping,
+        interpolation: "Smart",
+        extension: "Clip"
+    ).color
+    tex = HueSatVal(color: tex)
+    tex = MixRGB(
+        blend_type: "Color",
+        fac: 1,
+        color1: tex,
+        color2: HSV(0.459866, 0.484069, 0.330132)
+    )
+    output surface = tex
+}
