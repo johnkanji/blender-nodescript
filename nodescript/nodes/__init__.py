@@ -14,6 +14,10 @@ from nodescript.nodes.vmath import *
 
 class Vector(NodeBase):
     @property
+    def bnode(self):
+        return 'ShaderNodeVectorMath'
+    
+    @property
     def inputs(self):
         return {
             'x': BType.VALUE,
@@ -26,6 +30,9 @@ class Vector(NodeBase):
         return {
             'vector': BType.VECTOR
         }
+        
+    def after_add(self):
+        pass
 
 
 def get_node_func(name: str, mode: GraphMode) -> NodeBase:

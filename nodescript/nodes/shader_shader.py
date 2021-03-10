@@ -4,6 +4,10 @@ from ..type_system import *
 
 class Add(NodeBase):
     @property
+    def bnode(self):
+        return 'ShaderNodeAddShader'
+    
+    @property
     def inputs(self):
         return {
             'shader1': BType.SHADER,
@@ -17,6 +21,10 @@ class Add(NodeBase):
         }
 
 class Diffuse(NodeBase):
+    @property
+    def bnode(self):
+        return 'ShaderNodeBsdfDiffuse'
+    
     @property
     def inputs(self):
         return {
@@ -33,6 +41,10 @@ class Diffuse(NodeBase):
 
 class Emission(NodeBase):
     @property
+    def bnode(self):
+        return 'ShaderNodeEmission'
+    
+    @property
     def inputs(self):
         return {
             'color': BType.COLOR,
@@ -46,6 +58,10 @@ class Emission(NodeBase):
         }
 
 class Glass(NodeBase):
+    @property
+    def bnode(self):
+        return 'ShaderNodeBsdfGlass'
+    
     @property
     def inputs(self):
         return {
@@ -64,6 +80,10 @@ class Glass(NodeBase):
 
 class Holdout(NodeBase):
     @property
+    def bnode(self):
+        return 'ShaderNodeHoldout'
+    
+    @property
     def inputs(self):
         return {}
 
@@ -74,6 +94,10 @@ class Holdout(NodeBase):
         }
 
 class Mix(NodeBase):
+    @property
+    def bnode(self):
+        return 'ShaderNodeMixShader'
+    
     @property
     def inputs(self):
         return {
@@ -89,6 +113,10 @@ class Mix(NodeBase):
         }
 
 class Principled(NodeBase):
+    @property
+    def bnode(self):
+        return 'ShaderNodeBsdfPrincipled'
+    
     @property
     def inputs(self):
         return {
@@ -124,8 +152,40 @@ class Principled(NodeBase):
         return {
             'shader': BType.SHADER
         }
+        
+class PrincipledVolume(NodeBase):
+    @property
+    def bnode(self):
+        return 'ShaderNodeVolumePrincipled'
+    
+    @property
+    def inputs(self):
+        return {
+            'color': BType.COLOR,
+            'color_attribute': BType.STRING,
+            'density': BType.VALUE,
+            'density_attribute': BType.STRING,
+            'anisotropy': BType.VALUE,
+            'absorption_color': BType.COLOR,
+            'emission_strength': BType.VALUE,
+            'emission_color': BType.COLOR,
+            'blackbody_intensity': BType.VALUE,
+            'blackbody_tint': BType.COLOR,
+            'temperature': BType.VALUE,
+            'temperature_attribute': BType.STRING
+        }
+
+    @property
+    def outputs(self):
+        return {
+            'volume': BType.SHADER
+        }
 
 class Refraction(NodeBase):
+    @property
+    def bnode(self):
+        return 'ShaderNodeBsdfRefraction'
+
     @property
     def inputs(self):
         return {
@@ -143,6 +203,10 @@ class Refraction(NodeBase):
         }
 
 class Specular(NodeBase):
+    @property
+    def bnode(self):
+        return 'ShaderNodeEeveeSpecular'
+    
     @property
     def inputs(self):
         return {
@@ -166,6 +230,10 @@ class Specular(NodeBase):
 
 class SubsurfaceScattering(NodeBase):
     @property
+    def bnode(self):
+        return 'ShaderNodeSubsurfaceScattering'
+    
+    @property
     def inputs(self):
         return {
             'falloff': BType.STRING,
@@ -184,6 +252,10 @@ class SubsurfaceScattering(NodeBase):
 
 class Translucent(NodeBase):
     @property
+    def bnode(self):
+        return 'ShaderNodeBsdfTranslucent'
+    
+    @property
     def inputs(self):
         return {
             'color': BType.COLOR,
@@ -198,6 +270,10 @@ class Translucent(NodeBase):
 
 class Transparent(NodeBase):
     @property
+    def bnode(self):
+        return 'ShaderNodeBsdfTransparent'
+    
+    @property
     def inputs(self):
         return {
             'color': BType.COLOR
@@ -210,6 +286,10 @@ class Transparent(NodeBase):
         }
 
 class VolumeAbsorption(NodeBase):
+    @property
+    def bnode(self):
+        return 'ShaderNodeVolumeAbsorption'
+    
     @property
     def inputs(self):
         return {
@@ -224,6 +304,10 @@ class VolumeAbsorption(NodeBase):
         }
 
 class VolumeScatter(NodeBase):
+    @property
+    def bnode(self):
+        return 'ShaderNodeVolumeScatter'
+    
     @property
     def inputs(self):
         return {

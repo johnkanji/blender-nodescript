@@ -4,6 +4,10 @@ from ..type_system import *
 
 class Blackbody(NodeBase):
     @property
+    def bnode(self):
+        return 'ShaderNodeBlackbody'
+    
+    @property
     def inputs(self):
         return {
             'temperature': BType.VALUE
@@ -16,6 +20,10 @@ class Blackbody(NodeBase):
         }
     
 class Clamp(NodeBase):
+    @property
+    def bnode(self):
+        return 'ShaderNodeClamp'
+    
     @property
     def inputs(self):
         return {
@@ -39,6 +47,10 @@ class Clamp(NodeBase):
 
 class ColorRamp(NodeBase):
     @property
+    def bnode(self):
+        raise NotImplementedError
+    
+    @property
     def inputs(self):
         return {
             'fac': BType.VALUE
@@ -52,6 +64,10 @@ class ColorRamp(NodeBase):
         }
 
 class CombineHSV(NodeBase):
+    @property
+    def bnode(self):
+        return 'ShaderNodeCombineHSV'
+    
     @property
     def inputs(self):
         return {
@@ -68,6 +84,10 @@ class CombineHSV(NodeBase):
 
 class CombineRGB(NodeBase):
     @property
+    def bnode(self):
+        return 'ShaderNodeCombineRGB'
+    
+    @property
     def inputs(self):
         return {
             'r': BType.VALUE,
@@ -83,6 +103,10 @@ class CombineRGB(NodeBase):
 
 class CombineXYZ(NodeBase):
     @property
+    def bnode(self):
+        return 'ShaderNodeCombineXYZ'
+    
+    @property
     def inputs(self):
         return {
             'x': BType.VALUE,
@@ -97,6 +121,10 @@ class CombineXYZ(NodeBase):
         }
 
 class MapRange(NodeBase):
+    @property
+    def bnode(self):
+        return 'ShaderNodeMapRange'
+    
     @property
     def inputs(self):
         return {
@@ -124,6 +152,10 @@ class MapRange(NodeBase):
 
 class RGBToBW(NodeBase):
     @property
+    def bnode(self):
+        return 'ShaderNodeRGBToBW'
+    
+    @property
     def inputs(self):
         return {
             'color': BType.COLOR
@@ -136,6 +168,10 @@ class RGBToBW(NodeBase):
         }
 
 class SeparateHSV(NodeBase):
+    @property
+    def bnode(self):
+        return 'ShaderNodeSeparateHSV'
+    
     @property
     def inputs(self):
         return {
@@ -152,6 +188,10 @@ class SeparateHSV(NodeBase):
 
 class SeparateRGB(NodeBase):
     @property
+    def bnode(self):
+        return 'ShaderNodeSeparateRGB'
+    
+    @property
     def inputs(self):
         return {
             'color': BType.COLOR
@@ -166,6 +206,10 @@ class SeparateRGB(NodeBase):
         }
 
 class SeparateXYZ(NodeBase):
+    @property
+    def bnode(self):
+        return 'ShaderNodeSeparateXYZ'
+    
     @property
     def inputs(self):
         return {
@@ -182,6 +226,10 @@ class SeparateXYZ(NodeBase):
 
 class ShaderToRGB(NodeBase):
     @property
+    def bnode(self):
+        return 'ShaderNodeShaderToRGB'
+
+    @property
     def inputs(self):
         return {
             'shader': BType.SHADER
@@ -195,6 +243,10 @@ class ShaderToRGB(NodeBase):
         }
 
 class Wavelength(NodeBase):
+    @property
+    def bnode(self):
+        return 'ShaderNodeWavelength'
+    
     @property
     def inputs(self):
         return {

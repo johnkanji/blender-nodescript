@@ -29,6 +29,10 @@ class VMath(Namespace):
 
     class VAdd(NodeBase):
         @property
+        def bnode(self):
+            return 'ShaderNodeVectorMath'
+        
+        @property
         def inputs(self):
             return {
                 'vector1': BType.VECTOR,
@@ -57,6 +61,10 @@ class VMath(Namespace):
             
     class VMul(NodeBase):
         @property
+        def bnode(self):
+            return 'ShaderNodeVectorMath'
+        
+        @property
         def inputs(self):
             return {
                 'vector1': BType.VECTOR,
@@ -70,6 +78,10 @@ class VMath(Namespace):
             }
             
     class VDiv(NodeBase):
+        @property
+        def bnode(self):
+            return 'ShaderNodeVectorMath'
+        
         @property
         def inputs(self):
             return {
@@ -85,6 +97,10 @@ class VMath(Namespace):
             
     class VCross(NodeBase):
         @property
+        def bnode(self):
+            return 'ShaderNodeVectorMath'
+        
+        @property
         def inputs(self):
             return {
                 'vector1': BType.VECTOR,
@@ -98,6 +114,10 @@ class VMath(Namespace):
             }
             
     class VProject(NodeBase):
+        @property
+        def bnode(self):
+            return 'ShaderNodeVectorMath'
+        
         @property
         def inputs(self):
             return {
@@ -113,6 +133,10 @@ class VMath(Namespace):
 
     class VReflect(NodeBase):
         @property
+        def bnode(self):
+            return 'ShaderNodeVectorMath'
+        
+        @property
         def inputs(self):
             return {
                 'vector1': BType.VECTOR,
@@ -126,6 +150,10 @@ class VMath(Namespace):
             }
             
     class VDot(NodeBase):
+        @property
+        def bnode(self):
+            return 'ShaderNodeVectorMath'
+        
         @property
         def inputs(self):
             return {
@@ -141,6 +169,10 @@ class VMath(Namespace):
     
     class VDistance(NodeBase):
         @property
+        def bnode(self):
+            return 'ShaderNodeVectorMath'
+        
+        @property
         def inputs(self):
             return {
                 'vector1': BType.VECTOR,
@@ -155,6 +187,10 @@ class VMath(Namespace):
             
     class VLength(NodeBase):
         @property
+        def bnode(self):
+            return 'ShaderNodeVectorMath'
+        
+        @property
         def inputs(self):
             return {
                 'vector': BType.VECTOR
@@ -167,6 +203,10 @@ class VMath(Namespace):
             }
             
     class VScale(NodeBase):
+        @property
+        def bnode(self):
+            return 'ShaderNodeVectorMath'
+        
         @property
         def inputs(self):
             return {
@@ -182,6 +222,10 @@ class VMath(Namespace):
             
     class VNormalize(NodeBase):
         @property
+        def bnode(self):
+            return 'ShaderNodeVectorMath'
+        
+        @property
         def inputs(self):
             return {
                 'vector': BType.VECTOR
@@ -194,6 +238,10 @@ class VMath(Namespace):
             }
             
     class VAbs(NodeBase):
+        @property
+        def bnode(self):
+            return 'ShaderNodeVectorMath'
+        
         @property
         def inputs(self):
             return {
@@ -208,6 +256,10 @@ class VMath(Namespace):
             
     class VMin(NodeBase):
         @property
+        def bnode(self):
+            return 'ShaderNodeVectorMath'
+        
+        @property
         def inputs(self):
             return {
                 'vector1': BType.VECTOR,
@@ -221,6 +273,10 @@ class VMath(Namespace):
             }
             
     class VMax(NodeBase):
+        @property
+        def bnode(self):
+            return 'ShaderNodeVectorMath'
+        
         @property
         def inputs(self):
             return {

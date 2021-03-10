@@ -9,18 +9,23 @@ class NodescriptCompile(bpy.types.Operator):
     bl_options = {'UNDO'}
 
     def execute(self, context):
-        # clss = [c for c in dir(bpy.types) if 'ShaderNode' in c and c != 'ShaderNode']
-        # inherited = list(dir(bpy.types.NodeInternal))
-        # print(dir(bpy.types.ShaderNodeVectorMath))
-        # print(inherited)
-        # for c in clss:
-        #     cls = getattr(bpy.types, c)
-        #     # if not hasattr(cls, 'input_template') and not hasattr(cls, 'output_template'):
-        #     #     print(cls)
-        #     print(cls)
-        #     for a in dir(cls):
-        #         if a not in inherited:
-        #             print(' ', a)
-        parse.main()
+        nodes = parse.parse(parse.script)
+        print('PARSE DONE')
+        for node in nodes.values():
+            print(node)
+            for k, v in node.params.items():
+                print(' ', k, v)
+               
+        mat_name = 'TestMat' 
+        mat = (bpy.data.materials.get(mat_name) or 
+               bpy.data.materials.new(mat_name))
+        mat.use_nodes = True
+        
+        tree = mat.node_tree
+        for node in tree.nodes:
+            tree.nodes.remove(node)
+            
+        
+        
 
         return {'FINISHED'}

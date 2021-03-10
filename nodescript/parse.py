@@ -171,10 +171,19 @@ script = '''
 let geo = Geometry()
 let h = BrightContrast(color: geo.pointiness as Color, contrast: 15)
 let v = VMath.Dot(geo.normal, Vector(1,0,0.8))
-v = MapRange(value: v, clamp: True, to_max: 0.1)
+v = MapRange(v, clamp: True, to_max: 0.1)
 let col = CombineHSV(h as Value, 1, v)
 MaterialOutput(surface: col as Shader)
 '''
+
+def parse(script):
+    lexer = lex.NodeLexer()
+    parser = NodeParser()
+    
+    for text in [script]:
+        result = parser.parse(lexer.tokenize(text.strip()))
+    return parser.nodes
+
 
 def main():
     lexer = lex.NodeLexer()

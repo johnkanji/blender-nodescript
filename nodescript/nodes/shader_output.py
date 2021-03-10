@@ -4,6 +4,10 @@ from ..type_system import *
 
 class AOVOutput(NodeBase):
     @property
+    def bnode(self):
+        return 'ShaderNodeOutputAOV'
+    
+    @property
     def inputs(self):
         return {
             'name': BType.STRING,
@@ -16,6 +20,10 @@ class AOVOutput(NodeBase):
         return {}
 
 class MaterialOutput(NodeBase):
+    @property
+    def bnode(self):
+        return 'ShaderNodeOutputMaterial'
+    
     @property
     def inputs(self):
         return {

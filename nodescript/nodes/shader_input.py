@@ -4,6 +4,10 @@ from ..type_system import *
 
 class AmbientOcclusion(NodeBase):
     @property
+    def bnode(self):
+        return 'ShaderNodeAmbientOcclusion'
+    
+    @property
     def inputs(self):
         return {
             'samples': BType.VALUE,
@@ -22,6 +26,10 @@ class AmbientOcclusion(NodeBase):
         }
 
 class Attribute(NodeBase):
+    @property
+    def bnode(self):
+        return 'ShaderNodeAttribute'
+    
     @property
     def inputs(self):
         return {
@@ -47,6 +55,10 @@ class Attribute(NodeBase):
 
 class Bevel(NodeBase):
     @property
+    def bnode(self):
+        return 'ShaderNodeBevel'
+    
+    @property
     def inputs(self):
         return {
             'samples': BType.VALUE,
@@ -62,6 +74,10 @@ class Bevel(NodeBase):
 
 class CameraData(NodeBase):
     @property
+    def bnode(self):
+        return 'ShaderNodeCameraData'
+
+    @property
     def inputs(self):
         return {}
     
@@ -74,6 +90,10 @@ class CameraData(NodeBase):
         }
 
 class Fresnel(NodeBase):
+    @property
+    def bnode(self):
+        return 'ShaderNodeFresnel'
+    
     @property
     def inputs(self):
         return {
@@ -88,6 +108,10 @@ class Fresnel(NodeBase):
         }
         
 class Geometry(NodeBase):
+    @property
+    def bnode(self):
+        return 'ShaderNodeNewGeometry'
+    
     @property
     def inputs(self):
         return {}
@@ -108,6 +132,10 @@ class Geometry(NodeBase):
 
 class HairInfo(NodeBase):
     @property
+    def bnode(self):
+        return 'ShaderNodeHairInfo'
+    
+    @property
     def inputs(self):
         return {}
     
@@ -123,6 +151,10 @@ class HairInfo(NodeBase):
 
 class LayerWeight(NodeBase):
     @property
+    def bnode(self):
+        return 'ShaderNodeLayerWeight'
+    
+    @property
     def inputs(self):
         return {
             'blend': BType.VALUE,
@@ -137,6 +169,10 @@ class LayerWeight(NodeBase):
         }
 
 class LightPath(NodeBase):
+    @property
+    def bnode(self):
+        return 'ShaderNodeLightPath'
+    
     @property
     def inputs(self):
         return {}
@@ -161,6 +197,10 @@ class LightPath(NodeBase):
 
 class ObjectInfo(NodeBase):
     @property
+    def bnode(self):
+        return 'ShaderNodeObjectInfo'
+    
+    @property
     def inputs(self):
         return {}
     
@@ -175,6 +215,10 @@ class ObjectInfo(NodeBase):
         }
 
 class ParticleInfo(NodeBase):
+    @property
+    def bnode(self):
+        return 'ShaderNodeParticleInfo'
+    
     @property
     def inputs(self):
         return {}
@@ -194,6 +238,10 @@ class ParticleInfo(NodeBase):
 
 class RGB(NodeBase):
     @property
+    def bnode(self):
+        return 'ShaderNodeRGB'
+    
+    @property
     def inputs(self):
         return {}
     
@@ -204,6 +252,10 @@ class RGB(NodeBase):
         }
 
 class Tangent(NodeBase):
+    @property
+    def bnode(self):
+        return 'ShaderNodeTangent'
+    
     @property
     def inputs(self):
         return {
@@ -225,6 +277,10 @@ class Tangent(NodeBase):
 
 class TextureCoordinate(NodeBase):
     @property
+    def bnode(self):
+        return 'ShaderNodeTexCoord'
+    
+    @property
     def inputs(self):
         return {
             'from_instancer': BType.BOOL
@@ -244,6 +300,10 @@ class TextureCoordinate(NodeBase):
 
 class UVMap(NodeBase):
     @property
+    def bnode(self):
+        return 'ShaderNodeUVMap'
+    
+    @property
     def inputs(self):
         return {
             'from_instancer': BType.BOOL
@@ -257,6 +317,10 @@ class UVMap(NodeBase):
 
 class VertexColor(NodeBase):
     @property
+    def bnode(self):
+        return 'ShaderNodeVertexColor'
+    
+    @property
     def inputs(self):
         return {}
     
@@ -268,6 +332,10 @@ class VertexColor(NodeBase):
         }
 
 class VolumeInfo(NodeBase):
+    @property
+    def bnode(self):
+        return 'ShaderNodeVolumeInfo'
+    
     @property
     def inputs(self):
         return {}
@@ -282,6 +350,10 @@ class VolumeInfo(NodeBase):
         }
 
 class Wireframe(NodeBase):
+    @property
+    def bnode(self):
+        return 'ShaderNodeWireframe'
+    
     @property
     def inputs(self):
         return {

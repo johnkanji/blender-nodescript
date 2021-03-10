@@ -1,6 +1,6 @@
 from abc import ABC, abstractmethod
 from uuid import UUID, uuid4
-from typing import Dict, List
+from typing import Dict
 
 from nodescript.type_system import *
 
@@ -12,6 +12,11 @@ class NodeBase(ABC):
     @property
     def ntype(self):
         return type(self).__name__
+    
+    @property
+    @abstractmethod
+    def bnode(self):
+        pass
 
     @property
     @abstractmethod

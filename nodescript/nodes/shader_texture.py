@@ -4,6 +4,10 @@ from ..type_system import *
 
 class Brick(NodeBase):
     @property
+    def bnode(self):
+        return 'ShaderNodeTexBrick'
+    
+    @property
     def inputs(self):
         return {
             'offset': BType.VALUE,
@@ -31,6 +35,10 @@ class Brick(NodeBase):
 
 class Checker(NodeBase):
     @property
+    def bnode(self):
+        return 'ShaderNodeTexChecker'
+
+    @property
     def inputs(self):
         return {
             'vector': BType.VECTOR,
@@ -48,6 +56,10 @@ class Checker(NodeBase):
 
 class Environment(NodeBase):
     @property
+    def bnode(self):
+        return 'ShaderNodeTexEnvironment'
+    
+    @property
     def inputs(self):
         return {
             'interpolation': BType.STRING,
@@ -62,6 +74,10 @@ class Environment(NodeBase):
         }
 
 class Gradient(NodeBase):
+    @property
+    def bnode(self):
+        return 'ShaderNodeTexGradient'
+    
     @property
     def inputs(self):
         return {
@@ -84,6 +100,10 @@ class Gradient(NodeBase):
 
 class IES(NodeBase):
     @property
+    def bnode(self):
+        return 'ShaderNodeTexIES'
+    
+    @property
     def inputs(self):
         return {
             'vector': BType.VECTOR,
@@ -97,6 +117,10 @@ class IES(NodeBase):
         }
 
 class Image(NodeBase):
+    @property
+    def bnode(self):
+        return 'ShaderNodeTexImage'
+
     @property
     def inputs(self):
         return {
@@ -114,6 +138,10 @@ class Image(NodeBase):
         }
 
 class Magic(NodeBase):
+    @property
+    def bnode(self):
+        return 'ShaderNodeTexMagic'
+    
     @property
     def inputs(self):
         return {
@@ -137,6 +165,10 @@ class Magic(NodeBase):
         }
 
 class Musgrave(NodeBase):
+    @property
+    def bnode(self):
+        return 'ShaderNodeTexMusgrave'
+    
     @property
     def inputs(self):
         return {
@@ -165,6 +197,10 @@ class Musgrave(NodeBase):
 
 class Noise(NodeBase):
     @property
+    def bnode(self):
+        return 'ShaderNodeTexNoise'
+
+    @property
     def inputs(self):
         return {
             'dimensions': BType.STRING,
@@ -191,6 +227,10 @@ class Noise(NodeBase):
 
 class PointDensity(NodeBase):
     @property
+    def bnode(self):
+        return 'ShaderNodeTexPointDensity'
+    
+    @property
     def inputs(self):
         return {
             'point_source': BType.STRING,
@@ -210,6 +250,10 @@ class PointDensity(NodeBase):
         }
 
 class Sky(NodeBase):
+    @property
+    def bnode(self):
+        return 'ShaderNodeTexSky'
+    
     @property
     def inputs(self):
         return {
@@ -231,6 +275,10 @@ class Sky(NodeBase):
         }
 
 class Voronoi(NodeBase):
+    @property
+    def bnode(self):
+        return 'ShaderNodeTexVoronoi'
+
     @property
     def inputs(self):
         return {
@@ -262,6 +310,10 @@ class Voronoi(NodeBase):
 
 class Wave(NodeBase):
     @property
+    def bnode(self):
+        return 'ShaderNodeTexWave'
+    
+    @property
     def inputs(self):
         return {
             'type': BType.STRING,
@@ -291,6 +343,10 @@ class Wave(NodeBase):
         }
 
 class WhiteNoise(NodeBase):
+    @property
+    def bnode(self):
+        return 'ShaderNodeTexWhiteNoise'
+
     @property
     def inputs(self):
         return {

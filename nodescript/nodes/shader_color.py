@@ -1,8 +1,14 @@
+import bpy
+
 from . import NodeBase
 from ..type_system import *
 
 
 class BrightContrast(NodeBase):
+    @property
+    def bnode(self):
+        return 'ShaderNodeBrightContrast'
+    
     @property
     def inputs(self):
         return {
@@ -33,6 +39,10 @@ class Gamma(NodeBase):
 
 class HueSatVal(NodeBase):
     @property
+    def bnode(self):
+        return 'ShaderNodeHueSaturation'
+    
+    @property
     def inputs(self):
         return {
             'hue': BType.VALUE,
@@ -50,6 +60,10 @@ class HueSatVal(NodeBase):
 
 class Invert(NodeBase):
     @property
+    def bnode(self):
+        return 'ShaderNodeInvert'
+    
+    @property
     def inputs(self):
         return {
             'fac': BType.VALUE,
@@ -63,6 +77,10 @@ class Invert(NodeBase):
         }
 
 class LightFalloff(NodeBase):
+    @property
+    def bnode(self):
+        return 'ShaderNodeLightFalloff'
+    
     @property
     def inputs(self):
         return {
@@ -79,6 +97,10 @@ class LightFalloff(NodeBase):
         }
 
 class RGBCurves(NodeBase):
+    @property
+    def bnode(self):
+        return 'ShaderNodeRGBCurve'
+    
     @property
     def inputs(self):
         return {
