@@ -31,8 +31,13 @@ class Vector(NodeBase):
             'vector': BType.VECTOR
         }
         
-    def after_add(self):
-        pass
+    def after_add(self, bnode):
+        bnode.inputs[0].default_value[0] = self.params['x'].value
+        bnode.inputs[0].default_value[1] = self.params['y'].value
+        bnode.inputs[0].default_value[2] = self.params['z'].value
+        bnode.label = 'Vector'
+        bnode.inputs[1].hide = True
+        bnode.show_options = False
 
 
 def get_node_func(name: str, mode: GraphMode) -> NodeBase:

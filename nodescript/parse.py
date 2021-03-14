@@ -6,18 +6,24 @@ from nodescript.type_system import *
 
 
 class NodeParser(Parser):
+    # debugfile = 'parser.out'
     tokens = lex.NodeLexer.tokens
 
     def __init__(self):
         self.env = {}
         self.nodes = {}
         self.edges = []
+        self.name = None
         self.mode = GraphMode.SHADER
         
-        print([cls.__name__ for cls in Namespace.__subclasses__()])
         for cls in Namespace.__subclasses__():
-            print(cls.__name__)
             self.env[cls.__name__] = Value(cls(), BType.NAMESPACE)
+
+    @_('SHADER ID "{" statements "}"')
+    def shader(self, p):
+        self.mode = GraphMode.SHADER
+        self.name = p.ID
+        return p.statements
 
     @_('statement statements')
     def statements(self, p):
@@ -70,12 +76,14 @@ class NodeParser(Parser):
 
     @_('ID')
     def expr(self, p):
-        print('parse ID', p.ID)
-        print(' ', self.env.keys())
         if p.ID in self.env:
             return self.env[p.ID]
         else:
             return Value(get_node_func(p.ID, self.mode), BType.NODE_FUNC)
+        
+    @_('TYPE')
+    def expr(self, p):
+            return Value(get_node_func(p.TYPE.value, self.mode), BType.NODE_FUNC)
 
     @_('NUMBER')
     def expr(self, p):
@@ -87,7 +95,6 @@ class NodeParser(Parser):
     
     @_('TRUE', 'FALSE')
     def expr(self, p):
-        print(p[0])
         return Value(p[0] == 'True', BType.BOOL)
 
     @_('node_expr')
@@ -115,66 +122,66 @@ class NodeParser(Parser):
             return p.expr.value.access(p.ID)
         return (p.expr, p.ID)
     
-    @_('expr AS ID')
+    @_('expr AS TYPE')
     def cast_expr(self, p):
-        btype = BType(p.ID)
+        btype = p.TYPE
         expr = p.expr
         expr.btype = btype
         return expr
-
-    @_('params_positional COMMA params_named')
-    def params_list(self, p):
-        return p.params_positional + p.params_named
-
-    @_('params_positional')
-    def params_list(self, p):
-        return p.params_positional
-
-    @_('params_named')
-    def params_list(self, p):
-        return p.params_named
-
+    
+    
     @_('empty')
     def params_list(self, p):
-        pass
-
-    @_('expr')
-    def params_positional(self, p):
-        return [(None, p.expr)]
-
-    @_('expr COMMA params_positional')
-    def params_positional(self, p):
-        return [(None, p.expr)] + p.params_positional
-
-    @_('param_named')
-    def params_named(self, p):
-        return [p.param_named]
-
-    @_('param_named COMMA params_named')
-    def params_named(self, p):
-        return [p.param_named] + p.params_named
-
+        return []
+    
+    @_('pos')
+    def params_list(self, p):
+        return [p.pos]
+    
+    @_('pos COMMA params_list')
+    def params_list(self, p):
+        return [p.pos] + p.params_list
+    
+    @_('pos COMMA named_params_list')
+    def params_list(self, p):
+        return [p.pos]
+    
+    @_('named_params_list')
+    def params_list(self, p):
+        return p.named_params_list
+    
+    @_('named')
+    def named_params_list(self, p):
+        return [p.named]
+    
+    @_('named COMMA named_params_list')
+    def named_params_list(self, p):
+        return [p.named] + p.named_params_list
+    
     @_('ID COLON expr')
-    def param_named(self, p):
+    def named(self, p):
         return (p.ID, p.expr)
+    
+    @_('expr')
+    def pos(self, p):
+        return (None, p.expr)
+    
 
-    @_('ID COLON ID')
+    @_('ID COLON TYPE')
     def name_typed(self, p):
-        return (p.ID0, BType(p.ID1))
+        return (p.ID, p.TYPE)
 
     @_('')
     def empty(self, p):
         pass
+    
+    def error(self, p):
+        print('error')
+        print(p)
+        print(self.state, self.statestack)
+        for s in self.symstack:
+            print(s)
 
-
-script = '''
-let geo = Geometry()
-let h = BrightContrast(color: geo.pointiness as Color, contrast: 15)
-let v = VMath.Dot(geo.normal, Vector(1,0,0.8))
-v = MapRange(v, clamp: True, to_max: 0.1)
-let col = CombineHSV(h as Value, 1, v)
-MaterialOutput(surface: col as Shader)
-'''
 
 def parse(script):
     lexer = lex.NodeLexer()
@@ -182,25 +189,4 @@ def parse(script):
     
     for text in [script]:
         result = parser.parse(lexer.tokenize(text.strip()))
-    return parser.nodes
-
-
-def main():
-    lexer = lex.NodeLexer()
-    parser = NodeParser()
-
-    # for text in script.splitlines():
-    for text in [script]:
-        # print(list(lexer.tokenize(text)))
-        result = parser.parse(lexer.tokenize(text.strip()))
-        for s in result:
-            print(s)
-        print()
-    print('env')
-    for e in parser.env.items():
-        print(e)
-    print('nodes')
-    for n in parser.nodes.values():
-        print(n.id, n)
-        for p in n.params.items():
-            print(' ', p)
+    return parser

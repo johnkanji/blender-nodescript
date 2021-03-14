@@ -7,6 +7,7 @@ from nodescript.type_system import *
 class NodeBase(ABC):
 
     btype = BType.NODE
+    layer = 0
     id: UUID
 
     @property
@@ -35,14 +36,11 @@ class NodeBase(ABC):
     def __init__(self, params=None):
         self.id = uuid4()
 
-        print('new node', self.ntype, self.id)
-
         if params is None:
             params = {}
         args = {}
         inputs = list(self.inputs.items())
         for i, (k, v) in enumerate(params):
-            print(i, k, v)
             vtype = v.btype
             if k is None:
                 k = inputs[i][0]
@@ -51,20 +49,27 @@ class NodeBase(ABC):
             if v.btype == BType.NODE:
                 vout = list(v.outputs.items())[0]
                 v = Value(vout[0], vout[1], v.id)
-            print(vtype, v.btype)
             assert vtype == self.inputs[k] or v.btype == self.inputs[k],\
                 f'invalid type for parameter \'{k}\' {v.btype}'
             args[k] = v
         self.params = args
 
-        for k, v in self.params.items():
-            print(k, v)
-        print()
+        # print('new node', self.ntype, self.id)
+        # for k, v in self.params.items():
+        #     print(' ', k, v)
+        # print()
 
     def access(self, name):
         assert name in self.outputs.keys(),\
             f'node {self.ntype} has no output {name}'
         return Value(name, self.outputs[name], self.id)
+    
+    def translate_name(self, name):
+        try:
+            translated_name = self.translation[name]
+        except (KeyError, TypeError):
+            translated_name = name
+        return translated_name
 
     def __repr__(self):
         return f'Node({self.ntype})'

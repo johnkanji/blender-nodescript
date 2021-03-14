@@ -1,0 +1,931 @@
+Grammar:
+
+Rule 0     S' -> shader
+Rule 1     shader -> SHADER ID { statements }
+Rule 2     statements -> statement
+Rule 3     statements -> statement statements
+Rule 4     statement -> expr
+Rule 5     statement -> assignment
+Rule 6     statement -> declaration
+Rule 7     declaration -> LET assignment_body_typed
+Rule 8     declaration -> LET assignment_body
+Rule 9     assignment -> assignment_body_typed
+Rule 10    assignment -> assignment_body
+Rule 11    assignment_body -> ID EQUALS expr
+Rule 12    assignment_body_typed -> name_typed EQUALS expr
+Rule 13    expr -> cast_expr
+Rule 14    expr -> accessor_expr
+Rule 15    expr -> node_expr
+Rule 16    expr -> FALSE
+Rule 17    expr -> TRUE
+Rule 18    expr -> STRING
+Rule 19    expr -> NUMBER
+Rule 20    expr -> TYPE
+Rule 21    expr -> ID
+Rule 22    node_expr -> expr ( params_list )
+Rule 23    accessor_expr -> expr DOT ID
+Rule 24    cast_expr -> expr AS TYPE
+Rule 25    params_list -> named_params_list
+Rule 26    params_list -> pos COMMA named_params_list
+Rule 27    params_list -> pos COMMA params_list
+Rule 28    params_list -> pos
+Rule 29    params_list -> empty
+Rule 30    named_params_list -> named COMMA named_params_list
+Rule 31    named_params_list -> named
+Rule 32    named -> ID COLON expr
+Rule 33    pos -> expr
+Rule 34    name_typed -> ID COLON TYPE
+Rule 35    empty -> <empty>
+
+Unused terminals:
+
+    RETURNS
+    FUNC
+
+Terminals, with rules where they appear:
+
+(                    : 22
+)                    : 22
+AS                   : 24
+COLON                : 32 34
+COMMA                : 26 27 30
+DOT                  : 23
+EQUALS               : 11 12
+FALSE                : 16
+FUNC                 : 
+ID                   : 1 11 21 23 32 34
+LET                  : 7 8
+NUMBER               : 19
+RETURNS              : 
+SHADER               : 1
+STRING               : 18
+TRUE                 : 17
+TYPE                 : 20 24 34
+error                : 
+{                    : 1
+}                    : 1
+
+Nonterminals, with rules where they appear:
+
+accessor_expr        : 14
+assignment           : 5
+assignment_body      : 8 10
+assignment_body_typed : 7 9
+cast_expr            : 13
+declaration          : 6
+empty                : 29
+expr                 : 4 11 12 22 23 24 32 33
+name_typed           : 12
+named                : 30 31
+named_params_list    : 25 26 30
+node_expr            : 15
+params_list          : 22 27
+pos                  : 26 27 28
+shader               : 0
+statement            : 2 3
+statements           : 1 3
+
+
+state 0
+
+    (0) S' -> . shader
+    (1) shader -> . SHADER ID { statements }
+    SHADER          shift and go to state 2
+
+    shader                         shift and go to state 1
+
+state 1
+
+    (0) S' -> shader .
+
+
+state 2
+
+    (1) shader -> SHADER . ID { statements }
+    ID              shift and go to state 3
+
+
+state 3
+
+    (1) shader -> SHADER ID . { statements }
+    {               shift and go to state 4
+
+
+state 4
+
+    (1) shader -> SHADER ID { . statements }
+    (2) statements -> . statement
+    (3) statements -> . statement statements
+    (4) statement -> . expr
+    (5) statement -> . assignment
+    (6) statement -> . declaration
+    (13) expr -> . cast_expr
+    (14) expr -> . accessor_expr
+    (15) expr -> . node_expr
+    (16) expr -> . FALSE
+    (17) expr -> . TRUE
+    (18) expr -> . STRING
+    (19) expr -> . NUMBER
+    (20) expr -> . TYPE
+    (21) expr -> . ID
+    (9) assignment -> . assignment_body_typed
+    (10) assignment -> . assignment_body
+    (7) declaration -> . LET assignment_body_typed
+    (8) declaration -> . LET assignment_body
+    (24) cast_expr -> . expr AS TYPE
+    (23) accessor_expr -> . expr DOT ID
+    (22) node_expr -> . expr ( params_list )
+    (12) assignment_body_typed -> . name_typed EQUALS expr
+    (11) assignment_body -> . ID EQUALS expr
+    (34) name_typed -> . ID COLON TYPE
+    FALSE           shift and go to state 14
+    TRUE            shift and go to state 15
+    STRING          shift and go to state 16
+    NUMBER          shift and go to state 17
+    TYPE            shift and go to state 18
+    ID              shift and go to state 5
+    LET             shift and go to state 21
+
+    statements                     shift and go to state 6
+    statement                      shift and go to state 7
+    expr                           shift and go to state 8
+    assignment                     shift and go to state 9
+    declaration                    shift and go to state 10
+    cast_expr                      shift and go to state 11
+    accessor_expr                  shift and go to state 12
+    node_expr                      shift and go to state 13
+    assignment_body_typed          shift and go to state 19
+    assignment_body                shift and go to state 20
+    name_typed                     shift and go to state 22
+
+state 5
+
+    (21) expr -> ID .
+    (11) assignment_body -> ID . EQUALS expr
+    (34) name_typed -> ID . COLON TYPE
+    AS              reduce using rule 21 (expr -> ID .)
+    DOT             reduce using rule 21 (expr -> ID .)
+    (               reduce using rule 21 (expr -> ID .)
+    FALSE           reduce using rule 21 (expr -> ID .)
+    TRUE            reduce using rule 21 (expr -> ID .)
+    STRING          reduce using rule 21 (expr -> ID .)
+    NUMBER          reduce using rule 21 (expr -> ID .)
+    TYPE            reduce using rule 21 (expr -> ID .)
+    ID              reduce using rule 21 (expr -> ID .)
+    LET             reduce using rule 21 (expr -> ID .)
+    }               reduce using rule 21 (expr -> ID .)
+    EQUALS          shift and go to state 23
+    COLON           shift and go to state 24
+
+
+state 6
+
+    (1) shader -> SHADER ID { statements . }
+    }               shift and go to state 25
+
+
+state 7
+
+    (2) statements -> statement .
+    (3) statements -> statement . statements
+    (2) statements -> . statement
+    (3) statements -> . statement statements
+    (4) statement -> . expr
+    (5) statement -> . assignment
+    (6) statement -> . declaration
+    (13) expr -> . cast_expr
+    (14) expr -> . accessor_expr
+    (15) expr -> . node_expr
+    (16) expr -> . FALSE
+    (17) expr -> . TRUE
+    (18) expr -> . STRING
+    (19) expr -> . NUMBER
+    (20) expr -> . TYPE
+    (21) expr -> . ID
+    (9) assignment -> . assignment_body_typed
+    (10) assignment -> . assignment_body
+    (7) declaration -> . LET assignment_body_typed
+    (8) declaration -> . LET assignment_body
+    (24) cast_expr -> . expr AS TYPE
+    (23) accessor_expr -> . expr DOT ID
+    (22) node_expr -> . expr ( params_list )
+    (12) assignment_body_typed -> . name_typed EQUALS expr
+    (11) assignment_body -> . ID EQUALS expr
+    (34) name_typed -> . ID COLON TYPE
+    }               reduce using rule 2 (statements -> statement .)
+    FALSE           shift and go to state 14
+    TRUE            shift and go to state 15
+    STRING          shift and go to state 16
+    NUMBER          shift and go to state 17
+    TYPE            shift and go to state 18
+    ID              shift and go to state 5
+    LET             shift and go to state 21
+
+    statement                      shift and go to state 7
+    statements                     shift and go to state 26
+    expr                           shift and go to state 8
+    assignment                     shift and go to state 9
+    declaration                    shift and go to state 10
+    cast_expr                      shift and go to state 11
+    accessor_expr                  shift and go to state 12
+    node_expr                      shift and go to state 13
+    assignment_body_typed          shift and go to state 19
+    assignment_body                shift and go to state 20
+    name_typed                     shift and go to state 22
+
+state 8
+
+    (4) statement -> expr .
+    (24) cast_expr -> expr . AS TYPE
+    (23) accessor_expr -> expr . DOT ID
+    (22) node_expr -> expr . ( params_list )
+    FALSE           reduce using rule 4 (statement -> expr .)
+    TRUE            reduce using rule 4 (statement -> expr .)
+    STRING          reduce using rule 4 (statement -> expr .)
+    NUMBER          reduce using rule 4 (statement -> expr .)
+    TYPE            reduce using rule 4 (statement -> expr .)
+    ID              reduce using rule 4 (statement -> expr .)
+    LET             reduce using rule 4 (statement -> expr .)
+    }               reduce using rule 4 (statement -> expr .)
+    AS              shift and go to state 27
+    DOT             shift and go to state 28
+    (               shift and go to state 29
+
+
+state 9
+
+    (5) statement -> assignment .
+    FALSE           reduce using rule 5 (statement -> assignment .)
+    TRUE            reduce using rule 5 (statement -> assignment .)
+    STRING          reduce using rule 5 (statement -> assignment .)
+    NUMBER          reduce using rule 5 (statement -> assignment .)
+    TYPE            reduce using rule 5 (statement -> assignment .)
+    ID              reduce using rule 5 (statement -> assignment .)
+    LET             reduce using rule 5 (statement -> assignment .)
+    }               reduce using rule 5 (statement -> assignment .)
+
+
+state 10
+
+    (6) statement -> declaration .
+    FALSE           reduce using rule 6 (statement -> declaration .)
+    TRUE            reduce using rule 6 (statement -> declaration .)
+    STRING          reduce using rule 6 (statement -> declaration .)
+    NUMBER          reduce using rule 6 (statement -> declaration .)
+    TYPE            reduce using rule 6 (statement -> declaration .)
+    ID              reduce using rule 6 (statement -> declaration .)
+    LET             reduce using rule 6 (statement -> declaration .)
+    }               reduce using rule 6 (statement -> declaration .)
+
+
+state 11
+
+    (13) expr -> cast_expr .
+    AS              reduce using rule 13 (expr -> cast_expr .)
+    DOT             reduce using rule 13 (expr -> cast_expr .)
+    (               reduce using rule 13 (expr -> cast_expr .)
+    FALSE           reduce using rule 13 (expr -> cast_expr .)
+    TRUE            reduce using rule 13 (expr -> cast_expr .)
+    STRING          reduce using rule 13 (expr -> cast_expr .)
+    NUMBER          reduce using rule 13 (expr -> cast_expr .)
+    TYPE            reduce using rule 13 (expr -> cast_expr .)
+    ID              reduce using rule 13 (expr -> cast_expr .)
+    LET             reduce using rule 13 (expr -> cast_expr .)
+    }               reduce using rule 13 (expr -> cast_expr .)
+    COMMA           reduce using rule 13 (expr -> cast_expr .)
+    )               reduce using rule 13 (expr -> cast_expr .)
+
+
+state 12
+
+    (14) expr -> accessor_expr .
+    AS              reduce using rule 14 (expr -> accessor_expr .)
+    DOT             reduce using rule 14 (expr -> accessor_expr .)
+    (               reduce using rule 14 (expr -> accessor_expr .)
+    FALSE           reduce using rule 14 (expr -> accessor_expr .)
+    TRUE            reduce using rule 14 (expr -> accessor_expr .)
+    STRING          reduce using rule 14 (expr -> accessor_expr .)
+    NUMBER          reduce using rule 14 (expr -> accessor_expr .)
+    TYPE            reduce using rule 14 (expr -> accessor_expr .)
+    ID              reduce using rule 14 (expr -> accessor_expr .)
+    LET             reduce using rule 14 (expr -> accessor_expr .)
+    }               reduce using rule 14 (expr -> accessor_expr .)
+    COMMA           reduce using rule 14 (expr -> accessor_expr .)
+    )               reduce using rule 14 (expr -> accessor_expr .)
+
+
+state 13
+
+    (15) expr -> node_expr .
+    AS              reduce using rule 15 (expr -> node_expr .)
+    DOT             reduce using rule 15 (expr -> node_expr .)
+    (               reduce using rule 15 (expr -> node_expr .)
+    FALSE           reduce using rule 15 (expr -> node_expr .)
+    TRUE            reduce using rule 15 (expr -> node_expr .)
+    STRING          reduce using rule 15 (expr -> node_expr .)
+    NUMBER          reduce using rule 15 (expr -> node_expr .)
+    TYPE            reduce using rule 15 (expr -> node_expr .)
+    ID              reduce using rule 15 (expr -> node_expr .)
+    LET             reduce using rule 15 (expr -> node_expr .)
+    }               reduce using rule 15 (expr -> node_expr .)
+    COMMA           reduce using rule 15 (expr -> node_expr .)
+    )               reduce using rule 15 (expr -> node_expr .)
+
+
+state 14
+
+    (16) expr -> FALSE .
+    AS              reduce using rule 16 (expr -> FALSE .)
+    DOT             reduce using rule 16 (expr -> FALSE .)
+    (               reduce using rule 16 (expr -> FALSE .)
+    FALSE           reduce using rule 16 (expr -> FALSE .)
+    TRUE            reduce using rule 16 (expr -> FALSE .)
+    STRING          reduce using rule 16 (expr -> FALSE .)
+    NUMBER          reduce using rule 16 (expr -> FALSE .)
+    TYPE            reduce using rule 16 (expr -> FALSE .)
+    ID              reduce using rule 16 (expr -> FALSE .)
+    LET             reduce using rule 16 (expr -> FALSE .)
+    }               reduce using rule 16 (expr -> FALSE .)
+    COMMA           reduce using rule 16 (expr -> FALSE .)
+    )               reduce using rule 16 (expr -> FALSE .)
+
+
+state 15
+
+    (17) expr -> TRUE .
+    AS              reduce using rule 17 (expr -> TRUE .)
+    DOT             reduce using rule 17 (expr -> TRUE .)
+    (               reduce using rule 17 (expr -> TRUE .)
+    FALSE           reduce using rule 17 (expr -> TRUE .)
+    TRUE            reduce using rule 17 (expr -> TRUE .)
+    STRING          reduce using rule 17 (expr -> TRUE .)
+    NUMBER          reduce using rule 17 (expr -> TRUE .)
+    TYPE            reduce using rule 17 (expr -> TRUE .)
+    ID              reduce using rule 17 (expr -> TRUE .)
+    LET             reduce using rule 17 (expr -> TRUE .)
+    }               reduce using rule 17 (expr -> TRUE .)
+    COMMA           reduce using rule 17 (expr -> TRUE .)
+    )               reduce using rule 17 (expr -> TRUE .)
+
+
+state 16
+
+    (18) expr -> STRING .
+    AS              reduce using rule 18 (expr -> STRING .)
+    DOT             reduce using rule 18 (expr -> STRING .)
+    (               reduce using rule 18 (expr -> STRING .)
+    FALSE           reduce using rule 18 (expr -> STRING .)
+    TRUE            reduce using rule 18 (expr -> STRING .)
+    STRING          reduce using rule 18 (expr -> STRING .)
+    NUMBER          reduce using rule 18 (expr -> STRING .)
+    TYPE            reduce using rule 18 (expr -> STRING .)
+    ID              reduce using rule 18 (expr -> STRING .)
+    LET             reduce using rule 18 (expr -> STRING .)
+    }               reduce using rule 18 (expr -> STRING .)
+    COMMA           reduce using rule 18 (expr -> STRING .)
+    )               reduce using rule 18 (expr -> STRING .)
+
+
+state 17
+
+    (19) expr -> NUMBER .
+    AS              reduce using rule 19 (expr -> NUMBER .)
+    DOT             reduce using rule 19 (expr -> NUMBER .)
+    (               reduce using rule 19 (expr -> NUMBER .)
+    FALSE           reduce using rule 19 (expr -> NUMBER .)
+    TRUE            reduce using rule 19 (expr -> NUMBER .)
+    STRING          reduce using rule 19 (expr -> NUMBER .)
+    NUMBER          reduce using rule 19 (expr -> NUMBER .)
+    TYPE            reduce using rule 19 (expr -> NUMBER .)
+    ID              reduce using rule 19 (expr -> NUMBER .)
+    LET             reduce using rule 19 (expr -> NUMBER .)
+    }               reduce using rule 19 (expr -> NUMBER .)
+    COMMA           reduce using rule 19 (expr -> NUMBER .)
+    )               reduce using rule 19 (expr -> NUMBER .)
+
+
+state 18
+
+    (20) expr -> TYPE .
+    AS              reduce using rule 20 (expr -> TYPE .)
+    DOT             reduce using rule 20 (expr -> TYPE .)
+    (               reduce using rule 20 (expr -> TYPE .)
+    FALSE           reduce using rule 20 (expr -> TYPE .)
+    TRUE            reduce using rule 20 (expr -> TYPE .)
+    STRING          reduce using rule 20 (expr -> TYPE .)
+    NUMBER          reduce using rule 20 (expr -> TYPE .)
+    TYPE            reduce using rule 20 (expr -> TYPE .)
+    ID              reduce using rule 20 (expr -> TYPE .)
+    LET             reduce using rule 20 (expr -> TYPE .)
+    }               reduce using rule 20 (expr -> TYPE .)
+    COMMA           reduce using rule 20 (expr -> TYPE .)
+    )               reduce using rule 20 (expr -> TYPE .)
+
+
+state 19
+
+    (9) assignment -> assignment_body_typed .
+    FALSE           reduce using rule 9 (assignment -> assignment_body_typed .)
+    TRUE            reduce using rule 9 (assignment -> assignment_body_typed .)
+    STRING          reduce using rule 9 (assignment -> assignment_body_typed .)
+    NUMBER          reduce using rule 9 (assignment -> assignment_body_typed .)
+    TYPE            reduce using rule 9 (assignment -> assignment_body_typed .)
+    ID              reduce using rule 9 (assignment -> assignment_body_typed .)
+    LET             reduce using rule 9 (assignment -> assignment_body_typed .)
+    }               reduce using rule 9 (assignment -> assignment_body_typed .)
+
+
+state 20
+
+    (10) assignment -> assignment_body .
+    FALSE           reduce using rule 10 (assignment -> assignment_body .)
+    TRUE            reduce using rule 10 (assignment -> assignment_body .)
+    STRING          reduce using rule 10 (assignment -> assignment_body .)
+    NUMBER          reduce using rule 10 (assignment -> assignment_body .)
+    TYPE            reduce using rule 10 (assignment -> assignment_body .)
+    ID              reduce using rule 10 (assignment -> assignment_body .)
+    LET             reduce using rule 10 (assignment -> assignment_body .)
+    }               reduce using rule 10 (assignment -> assignment_body .)
+
+
+state 21
+
+    (7) declaration -> LET . assignment_body_typed
+    (8) declaration -> LET . assignment_body
+    (12) assignment_body_typed -> . name_typed EQUALS expr
+    (11) assignment_body -> . ID EQUALS expr
+    (34) name_typed -> . ID COLON TYPE
+    ID              shift and go to state 32
+
+    assignment_body_typed          shift and go to state 30
+    assignment_body                shift and go to state 31
+    name_typed                     shift and go to state 22
+
+state 22
+
+    (12) assignment_body_typed -> name_typed . EQUALS expr
+    EQUALS          shift and go to state 33
+
+
+state 23
+
+    (11) assignment_body -> ID EQUALS . expr
+    (13) expr -> . cast_expr
+    (14) expr -> . accessor_expr
+    (15) expr -> . node_expr
+    (16) expr -> . FALSE
+    (17) expr -> . TRUE
+    (18) expr -> . STRING
+    (19) expr -> . NUMBER
+    (20) expr -> . TYPE
+    (21) expr -> . ID
+    (24) cast_expr -> . expr AS TYPE
+    (23) accessor_expr -> . expr DOT ID
+    (22) node_expr -> . expr ( params_list )
+    FALSE           shift and go to state 14
+    TRUE            shift and go to state 15
+    STRING          shift and go to state 16
+    NUMBER          shift and go to state 17
+    TYPE            shift and go to state 18
+    ID              shift and go to state 34
+
+    expr                           shift and go to state 35
+    cast_expr                      shift and go to state 11
+    accessor_expr                  shift and go to state 12
+    node_expr                      shift and go to state 13
+
+state 24
+
+    (34) name_typed -> ID COLON . TYPE
+    TYPE            shift and go to state 36
+
+
+state 25
+
+    (1) shader -> SHADER ID { statements } .
+    $end            reduce using rule 1 (shader -> SHADER ID { statements } .)
+
+
+state 26
+
+    (3) statements -> statement statements .
+    }               reduce using rule 3 (statements -> statement statements .)
+
+
+state 27
+
+    (24) cast_expr -> expr AS . TYPE
+    TYPE            shift and go to state 37
+
+
+state 28
+
+    (23) accessor_expr -> expr DOT . ID
+    ID              shift and go to state 38
+
+
+state 29
+
+    (22) node_expr -> expr ( . params_list )
+    (25) params_list -> . named_params_list
+    (26) params_list -> . pos COMMA named_params_list
+    (27) params_list -> . pos COMMA params_list
+    (28) params_list -> . pos
+    (29) params_list -> . empty
+    (30) named_params_list -> . named COMMA named_params_list
+    (31) named_params_list -> . named
+    (33) pos -> . expr
+    (35) empty -> .
+    (32) named -> . ID COLON expr
+    (13) expr -> . cast_expr
+    (14) expr -> . accessor_expr
+    (15) expr -> . node_expr
+    (16) expr -> . FALSE
+    (17) expr -> . TRUE
+    (18) expr -> . STRING
+    (19) expr -> . NUMBER
+    (20) expr -> . TYPE
+    (21) expr -> . ID
+    (24) cast_expr -> . expr AS TYPE
+    (23) accessor_expr -> . expr DOT ID
+    (22) node_expr -> . expr ( params_list )
+    )               reduce using rule 35 (empty -> .)
+    ID              shift and go to state 45
+    FALSE           shift and go to state 14
+    TRUE            shift and go to state 15
+    STRING          shift and go to state 16
+    NUMBER          shift and go to state 17
+    TYPE            shift and go to state 18
+
+    expr                           shift and go to state 39
+    params_list                    shift and go to state 40
+    named_params_list              shift and go to state 41
+    pos                            shift and go to state 42
+    empty                          shift and go to state 43
+    named                          shift and go to state 44
+    cast_expr                      shift and go to state 11
+    accessor_expr                  shift and go to state 12
+    node_expr                      shift and go to state 13
+
+state 30
+
+    (7) declaration -> LET assignment_body_typed .
+    FALSE           reduce using rule 7 (declaration -> LET assignment_body_typed .)
+    TRUE            reduce using rule 7 (declaration -> LET assignment_body_typed .)
+    STRING          reduce using rule 7 (declaration -> LET assignment_body_typed .)
+    NUMBER          reduce using rule 7 (declaration -> LET assignment_body_typed .)
+    TYPE            reduce using rule 7 (declaration -> LET assignment_body_typed .)
+    ID              reduce using rule 7 (declaration -> LET assignment_body_typed .)
+    LET             reduce using rule 7 (declaration -> LET assignment_body_typed .)
+    }               reduce using rule 7 (declaration -> LET assignment_body_typed .)
+
+
+state 31
+
+    (8) declaration -> LET assignment_body .
+    FALSE           reduce using rule 8 (declaration -> LET assignment_body .)
+    TRUE            reduce using rule 8 (declaration -> LET assignment_body .)
+    STRING          reduce using rule 8 (declaration -> LET assignment_body .)
+    NUMBER          reduce using rule 8 (declaration -> LET assignment_body .)
+    TYPE            reduce using rule 8 (declaration -> LET assignment_body .)
+    ID              reduce using rule 8 (declaration -> LET assignment_body .)
+    LET             reduce using rule 8 (declaration -> LET assignment_body .)
+    }               reduce using rule 8 (declaration -> LET assignment_body .)
+
+
+state 32
+
+    (11) assignment_body -> ID . EQUALS expr
+    (34) name_typed -> ID . COLON TYPE
+    EQUALS          shift and go to state 23
+    COLON           shift and go to state 24
+
+
+state 33
+
+    (12) assignment_body_typed -> name_typed EQUALS . expr
+    (13) expr -> . cast_expr
+    (14) expr -> . accessor_expr
+    (15) expr -> . node_expr
+    (16) expr -> . FALSE
+    (17) expr -> . TRUE
+    (18) expr -> . STRING
+    (19) expr -> . NUMBER
+    (20) expr -> . TYPE
+    (21) expr -> . ID
+    (24) cast_expr -> . expr AS TYPE
+    (23) accessor_expr -> . expr DOT ID
+    (22) node_expr -> . expr ( params_list )
+    FALSE           shift and go to state 14
+    TRUE            shift and go to state 15
+    STRING          shift and go to state 16
+    NUMBER          shift and go to state 17
+    TYPE            shift and go to state 18
+    ID              shift and go to state 34
+
+    expr                           shift and go to state 46
+    cast_expr                      shift and go to state 11
+    accessor_expr                  shift and go to state 12
+    node_expr                      shift and go to state 13
+
+state 34
+
+    (21) expr -> ID .
+    AS              reduce using rule 21 (expr -> ID .)
+    DOT             reduce using rule 21 (expr -> ID .)
+    (               reduce using rule 21 (expr -> ID .)
+    FALSE           reduce using rule 21 (expr -> ID .)
+    TRUE            reduce using rule 21 (expr -> ID .)
+    STRING          reduce using rule 21 (expr -> ID .)
+    NUMBER          reduce using rule 21 (expr -> ID .)
+    TYPE            reduce using rule 21 (expr -> ID .)
+    ID              reduce using rule 21 (expr -> ID .)
+    LET             reduce using rule 21 (expr -> ID .)
+    }               reduce using rule 21 (expr -> ID .)
+    COMMA           reduce using rule 21 (expr -> ID .)
+    )               reduce using rule 21 (expr -> ID .)
+
+
+state 35
+
+    (11) assignment_body -> ID EQUALS expr .
+    (24) cast_expr -> expr . AS TYPE
+    (23) accessor_expr -> expr . DOT ID
+    (22) node_expr -> expr . ( params_list )
+    FALSE           reduce using rule 11 (assignment_body -> ID EQUALS expr .)
+    TRUE            reduce using rule 11 (assignment_body -> ID EQUALS expr .)
+    STRING          reduce using rule 11 (assignment_body -> ID EQUALS expr .)
+    NUMBER          reduce using rule 11 (assignment_body -> ID EQUALS expr .)
+    TYPE            reduce using rule 11 (assignment_body -> ID EQUALS expr .)
+    ID              reduce using rule 11 (assignment_body -> ID EQUALS expr .)
+    LET             reduce using rule 11 (assignment_body -> ID EQUALS expr .)
+    }               reduce using rule 11 (assignment_body -> ID EQUALS expr .)
+    AS              shift and go to state 27
+    DOT             shift and go to state 28
+    (               shift and go to state 29
+
+
+state 36
+
+    (34) name_typed -> ID COLON TYPE .
+    EQUALS          reduce using rule 34 (name_typed -> ID COLON TYPE .)
+
+
+state 37
+
+    (24) cast_expr -> expr AS TYPE .
+    AS              reduce using rule 24 (cast_expr -> expr AS TYPE .)
+    DOT             reduce using rule 24 (cast_expr -> expr AS TYPE .)
+    (               reduce using rule 24 (cast_expr -> expr AS TYPE .)
+    FALSE           reduce using rule 24 (cast_expr -> expr AS TYPE .)
+    TRUE            reduce using rule 24 (cast_expr -> expr AS TYPE .)
+    STRING          reduce using rule 24 (cast_expr -> expr AS TYPE .)
+    NUMBER          reduce using rule 24 (cast_expr -> expr AS TYPE .)
+    TYPE            reduce using rule 24 (cast_expr -> expr AS TYPE .)
+    ID              reduce using rule 24 (cast_expr -> expr AS TYPE .)
+    LET             reduce using rule 24 (cast_expr -> expr AS TYPE .)
+    }               reduce using rule 24 (cast_expr -> expr AS TYPE .)
+    COMMA           reduce using rule 24 (cast_expr -> expr AS TYPE .)
+    )               reduce using rule 24 (cast_expr -> expr AS TYPE .)
+
+
+state 38
+
+    (23) accessor_expr -> expr DOT ID .
+    AS              reduce using rule 23 (accessor_expr -> expr DOT ID .)
+    DOT             reduce using rule 23 (accessor_expr -> expr DOT ID .)
+    (               reduce using rule 23 (accessor_expr -> expr DOT ID .)
+    FALSE           reduce using rule 23 (accessor_expr -> expr DOT ID .)
+    TRUE            reduce using rule 23 (accessor_expr -> expr DOT ID .)
+    STRING          reduce using rule 23 (accessor_expr -> expr DOT ID .)
+    NUMBER          reduce using rule 23 (accessor_expr -> expr DOT ID .)
+    TYPE            reduce using rule 23 (accessor_expr -> expr DOT ID .)
+    ID              reduce using rule 23 (accessor_expr -> expr DOT ID .)
+    LET             reduce using rule 23 (accessor_expr -> expr DOT ID .)
+    }               reduce using rule 23 (accessor_expr -> expr DOT ID .)
+    COMMA           reduce using rule 23 (accessor_expr -> expr DOT ID .)
+    )               reduce using rule 23 (accessor_expr -> expr DOT ID .)
+
+
+state 39
+
+    (33) pos -> expr .
+    (24) cast_expr -> expr . AS TYPE
+    (23) accessor_expr -> expr . DOT ID
+    (22) node_expr -> expr . ( params_list )
+    COMMA           reduce using rule 33 (pos -> expr .)
+    )               reduce using rule 33 (pos -> expr .)
+    AS              shift and go to state 27
+    DOT             shift and go to state 28
+    (               shift and go to state 29
+
+
+state 40
+
+    (22) node_expr -> expr ( params_list . )
+    )               shift and go to state 47
+
+
+state 41
+
+    (25) params_list -> named_params_list .
+    )               reduce using rule 25 (params_list -> named_params_list .)
+
+
+state 42
+
+    (26) params_list -> pos . COMMA named_params_list
+    (27) params_list -> pos . COMMA params_list
+    (28) params_list -> pos .
+    COMMA           shift and go to state 48
+    )               reduce using rule 28 (params_list -> pos .)
+
+
+state 43
+
+    (29) params_list -> empty .
+    )               reduce using rule 29 (params_list -> empty .)
+
+
+state 44
+
+    (30) named_params_list -> named . COMMA named_params_list
+    (31) named_params_list -> named .
+    COMMA           shift and go to state 49
+    )               reduce using rule 31 (named_params_list -> named .)
+
+
+state 45
+
+    (32) named -> ID . COLON expr
+    (21) expr -> ID .
+    COLON           shift and go to state 50
+    AS              reduce using rule 21 (expr -> ID .)
+    DOT             reduce using rule 21 (expr -> ID .)
+    (               reduce using rule 21 (expr -> ID .)
+    COMMA           reduce using rule 21 (expr -> ID .)
+    )               reduce using rule 21 (expr -> ID .)
+
+
+state 46
+
+    (12) assignment_body_typed -> name_typed EQUALS expr .
+    (24) cast_expr -> expr . AS TYPE
+    (23) accessor_expr -> expr . DOT ID
+    (22) node_expr -> expr . ( params_list )
+    FALSE           reduce using rule 12 (assignment_body_typed -> name_typed EQUALS expr .)
+    TRUE            reduce using rule 12 (assignment_body_typed -> name_typed EQUALS expr .)
+    STRING          reduce using rule 12 (assignment_body_typed -> name_typed EQUALS expr .)
+    NUMBER          reduce using rule 12 (assignment_body_typed -> name_typed EQUALS expr .)
+    TYPE            reduce using rule 12 (assignment_body_typed -> name_typed EQUALS expr .)
+    ID              reduce using rule 12 (assignment_body_typed -> name_typed EQUALS expr .)
+    LET             reduce using rule 12 (assignment_body_typed -> name_typed EQUALS expr .)
+    }               reduce using rule 12 (assignment_body_typed -> name_typed EQUALS expr .)
+    AS              shift and go to state 27
+    DOT             shift and go to state 28
+    (               shift and go to state 29
+
+
+state 47
+
+    (22) node_expr -> expr ( params_list ) .
+    AS              reduce using rule 22 (node_expr -> expr ( params_list ) .)
+    DOT             reduce using rule 22 (node_expr -> expr ( params_list ) .)
+    (               reduce using rule 22 (node_expr -> expr ( params_list ) .)
+    FALSE           reduce using rule 22 (node_expr -> expr ( params_list ) .)
+    TRUE            reduce using rule 22 (node_expr -> expr ( params_list ) .)
+    STRING          reduce using rule 22 (node_expr -> expr ( params_list ) .)
+    NUMBER          reduce using rule 22 (node_expr -> expr ( params_list ) .)
+    TYPE            reduce using rule 22 (node_expr -> expr ( params_list ) .)
+    ID              reduce using rule 22 (node_expr -> expr ( params_list ) .)
+    LET             reduce using rule 22 (node_expr -> expr ( params_list ) .)
+    }               reduce using rule 22 (node_expr -> expr ( params_list ) .)
+    COMMA           reduce using rule 22 (node_expr -> expr ( params_list ) .)
+    )               reduce using rule 22 (node_expr -> expr ( params_list ) .)
+
+
+state 48
+
+    (26) params_list -> pos COMMA . named_params_list
+    (27) params_list -> pos COMMA . params_list
+    (30) named_params_list -> . named COMMA named_params_list
+    (31) named_params_list -> . named
+    (25) params_list -> . named_params_list
+    (26) params_list -> . pos COMMA named_params_list
+    (27) params_list -> . pos COMMA params_list
+    (28) params_list -> . pos
+    (29) params_list -> . empty
+    (32) named -> . ID COLON expr
+    (33) pos -> . expr
+    (35) empty -> .
+    (13) expr -> . cast_expr
+    (14) expr -> . accessor_expr
+    (15) expr -> . node_expr
+    (16) expr -> . FALSE
+    (17) expr -> . TRUE
+    (18) expr -> . STRING
+    (19) expr -> . NUMBER
+    (20) expr -> . TYPE
+    (21) expr -> . ID
+    (24) cast_expr -> . expr AS TYPE
+    (23) accessor_expr -> . expr DOT ID
+    (22) node_expr -> . expr ( params_list )
+    ID              shift and go to state 45
+    )               reduce using rule 35 (empty -> .)
+    FALSE           shift and go to state 14
+    TRUE            shift and go to state 15
+    STRING          shift and go to state 16
+    NUMBER          shift and go to state 17
+    TYPE            shift and go to state 18
+
+    pos                            shift and go to state 42
+    named_params_list              shift and go to state 51
+    params_list                    shift and go to state 52
+    named                          shift and go to state 44
+    empty                          shift and go to state 43
+    expr                           shift and go to state 39
+    cast_expr                      shift and go to state 11
+    accessor_expr                  shift and go to state 12
+    node_expr                      shift and go to state 13
+
+state 49
+
+    (30) named_params_list -> named COMMA . named_params_list
+    (30) named_params_list -> . named COMMA named_params_list
+    (31) named_params_list -> . named
+    (32) named -> . ID COLON expr
+    ID              shift and go to state 54
+
+    named                          shift and go to state 44
+    named_params_list              shift and go to state 53
+
+state 50
+
+    (32) named -> ID COLON . expr
+    (13) expr -> . cast_expr
+    (14) expr -> . accessor_expr
+    (15) expr -> . node_expr
+    (16) expr -> . FALSE
+    (17) expr -> . TRUE
+    (18) expr -> . STRING
+    (19) expr -> . NUMBER
+    (20) expr -> . TYPE
+    (21) expr -> . ID
+    (24) cast_expr -> . expr AS TYPE
+    (23) accessor_expr -> . expr DOT ID
+    (22) node_expr -> . expr ( params_list )
+    FALSE           shift and go to state 14
+    TRUE            shift and go to state 15
+    STRING          shift and go to state 16
+    NUMBER          shift and go to state 17
+    TYPE            shift and go to state 18
+    ID              shift and go to state 34
+
+    expr                           shift and go to state 55
+    cast_expr                      shift and go to state 11
+    accessor_expr                  shift and go to state 12
+    node_expr                      shift and go to state 13
+
+state 51
+
+    (26) params_list -> pos COMMA named_params_list .
+    (25) params_list -> named_params_list .
+  ! reduce/reduce conflict for ) resolved using rule 26 (params_list -> pos COMMA named_params_list .)
+    )               reduce using rule 26 (params_list -> pos COMMA named_params_list .)
+
+
+state 52
+
+    (27) params_list -> pos COMMA params_list .
+    )               reduce using rule 27 (params_list -> pos COMMA params_list .)
+
+
+state 53
+
+    (30) named_params_list -> named COMMA named_params_list .
+    )               reduce using rule 30 (named_params_list -> named COMMA named_params_list .)
+
+
+state 54
+
+    (32) named -> ID . COLON expr
+    COLON           shift and go to state 50
+
+
+state 55
+
+    (32) named -> ID COLON expr .
+    (24) cast_expr -> expr . AS TYPE
+    (23) accessor_expr -> expr . DOT ID
+    (22) node_expr -> expr . ( params_list )
+    COMMA           reduce using rule 32 (named -> ID COLON expr .)
+    )               reduce using rule 32 (named -> ID COLON expr .)
+    AS              shift and go to state 27
+    DOT             shift and go to state 28
+    (               shift and go to state 29
+
+
+Conflicts:
+
+reduce/reduce conflict in state 51 resolved using rule params_list -> pos COMMA named_params_list
+rejected rule (params_list -> named_params_list) in state 51

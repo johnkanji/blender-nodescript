@@ -1,9 +1,11 @@
-from sly import Lexer
+from nodescript.sly import Lexer
+from nodescript.type_system import *
 
 class NodeLexer(Lexer):
 
     tokens = { 
         ID, LET, SHADER, FUNC, AS,
+        TYPE,
         TRUE, FALSE,
         NUMBER,
         STRING,
@@ -34,6 +36,11 @@ class NodeLexer(Lexer):
     @_(r'[\"][^\"]*[\"]')
     def STRING(self, t):
         t.value = t.value.replace('"', '')
+        return t
+
+    @_(r'(Vector)|(Value)|(Color)|(Shader)|(Node)')
+    def TYPE(self, t):
+        t.value = BType(t.value)
         return t
 
     ID = r'[a-zA-Z_][a-zA-Z0-9_]*'

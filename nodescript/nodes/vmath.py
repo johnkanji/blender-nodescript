@@ -5,6 +5,11 @@ from ..type_system import *
 from nodescript.nodes import NodeBase, Namespace
 
 
+def _after_add_func(op):
+    def func(self, bnode):
+        bnode.operation = op
+    return func
+
 class VMath(Namespace):
     
     @property
@@ -44,6 +49,15 @@ class VMath(Namespace):
             return {
                 'vector': BType.VECTOR
             }
+            
+        @property
+        def translation(self):
+            return {
+                'vector1': 'vector',
+                'vector2': 'vector_001'
+            }
+            
+        after_add = _after_add_func('ADD')
             
     class VSub(NodeBase):
         @property
@@ -164,8 +178,17 @@ class VMath(Namespace):
         @property
         def outputs(self):
             return {
-                'vector': BType.VALUE
+                'value': BType.VALUE
             }
+            
+        @property
+        def translation(self):
+            return {
+                'vector1': 'vector',
+                'vector2': 'vector_001'
+            }
+            
+        after_add = _after_add_func('DOT_PRODUCT')
     
     class VDistance(NodeBase):
         @property

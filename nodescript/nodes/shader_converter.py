@@ -128,9 +128,9 @@ class MapRange(NodeBase):
     @property
     def inputs(self):
         return {
+            'value': BType.VALUE,
             'type': BType.STRING,
             'clamp': BType.BOOL,
-            'value': BType.VALUE,
             'from_min': BType.VALUE,
             'from_max': BType.VALUE,
             'to_min': BType.VALUE,
