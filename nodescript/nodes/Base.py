@@ -1,13 +1,12 @@
 from abc import ABC, abstractmethod
 from uuid import UUID, uuid4
 from typing import Dict
+from inspect import isclass
 
 from nodescript.type_system import *
 
 class NodeBase(ABC):
-
     btype = BType.NODE
-    layer = 0
     id: UUID
 
     @property
@@ -35,6 +34,7 @@ class NodeBase(ABC):
 
     def __init__(self, params=None):
         self.id = uuid4()
+        self.layer = 0
 
         if params is None:
             params = {}
@@ -76,17 +76,14 @@ class NodeBase(ABC):
     
 
 class Namespace(ABC):
-
     @property
     def ntype(self):
         return type(self).__name__
     
-    @property
-    @abstractmethod
-    def nodes(self):
-        pass
-    
     def access(self, name):
-        assert name in self.nodes.keys(),\
+        assert name[0] != '_' and hasattr(self, name),\
             f'namespace {self.ntype} has no output {name}'
-        return Value(self.nodes[name], BType.NODE_FUNC)
+        attr = getattr(self, name)
+        assert isclass(attr) and issubclass(attr, NodeBase),\
+            f'namespace {self.ntype} has no output {name}'
+        return Value(attr, BType.NODE_FUNC)

@@ -1,314 +1,162 @@
-import sys
-from abc import ABC, abstractmethod
-
 from ..type_system import *
 from nodescript.nodes import NodeBase, Namespace
 
 
 def _after_add_func(op):
     def func(self, bnode):
+        bnode.show_options = False
         bnode.operation = op
     return func
 
 class VMath(Namespace):
-    
-    @property
-    def nodes(self):
-        return {
-            'Add': self.VAdd,
-            'Sub': self.VSub,
-            'Mul': self.VMul,
-            'Div': self.VDiv,
-            'Cross': self.VCross,
-            'Project': self.VProject,
-            'Reflect': self.VReflect,
-            'Dot': self.VDot,
-            'Distance': self.VDistance,
-            'Length': self.VLength,
-            'Scale': self.VScale,
-            'Normalize': self.VNormalize,
-            'Abs': self.VAbs,
-            'Min': self.VMin,
-            'Max': self.VMax
-        }
-
-    class VAdd(NodeBase):
+    class _VMathBase(NodeBase):
         @property
         def bnode(self):
             return 'ShaderNodeVectorMath'
-        
-        @property
-        def inputs(self):
-            return {
-                'vector1': BType.VECTOR,
-                'vector2': BType.VECTOR
-            }
 
         @property
         def outputs(self):
             return {
                 'vector': BType.VECTOR
             }
-            
+
         @property
         def translation(self):
             return {
                 'vector1': 'vector',
-                'vector2': 'vector_001'
+                'vector2': 'vector_001',
+                'vector3': 'vector_002'
             }
-            
+
+    class _UnOp(_VMathBase):
+        @property
+        def inputs(self):
+            return {
+                'vector': BType.VECTOR
+            }
+
+    class _BinOp(_VMathBase):
+        @property
+        def inputs(self):
+            return {
+                'vector1': BType.VECTOR,
+                'vector2': BType.VECTOR
+            }
+
+
+    class Add(_BinOp):
         after_add = _after_add_func('ADD')
-            
-    class VSub(NodeBase):
-        @property
-        def inputs(self):
-            return {
-                'vector1': BType.VECTOR,
-                'vector2': BType.VECTOR
-            }
 
-        @property
-        def outputs(self):
-            return {
-                'vector': BType.VECTOR
-            }
-            
-    class VMul(NodeBase):
-        @property
-        def bnode(self):
-            return 'ShaderNodeVectorMath'
-        
-        @property
-        def inputs(self):
-            return {
-                'vector1': BType.VECTOR,
-                'vector2': BType.VECTOR
-            }
+    class Sub(_BinOp):
+        after_add = _after_add_func('SUBTRACT')
 
-        @property
-        def outputs(self):
-            return {
-                'vector': BType.VECTOR
-            }
-            
-    class VDiv(NodeBase):
-        @property
-        def bnode(self):
-            return 'ShaderNodeVectorMath'
-        
-        @property
-        def inputs(self):
-            return {
-                'vector1': BType.VECTOR,
-                'vector2': BType.VECTOR
-            }
+    class Mul(_BinOp):
+        after_add = _after_add_func('MULTIPLY')
 
-        @property
-        def outputs(self):
-            return {
-                'vector': BType.VECTOR
-            }
-            
-    class VCross(NodeBase):
-        @property
-        def bnode(self):
-            return 'ShaderNodeVectorMath'
-        
-        @property
-        def inputs(self):
-            return {
-                'vector1': BType.VECTOR,
-                'vector2': BType.VECTOR
-            }
+    class Div(_BinOp):
+        after_add = _after_add_func('DIVIDE')
 
-        @property
-        def outputs(self):
-            return {
-                'vector': BType.VECTOR
-            }
-            
-    class VProject(NodeBase):
-        @property
-        def bnode(self):
-            return 'ShaderNodeVectorMath'
-        
-        @property
-        def inputs(self):
-            return {
-                'vector1': BType.VECTOR,
-                'vector2': BType.VECTOR
-            }
+    class Cross(_BinOp):
+        after_add = _after_add_func('CROSS_PRODUCT')
 
-        @property
-        def outputs(self):
-            return {
-                'vector': BType.VECTOR
-            }
+    class Project(_BinOp):
+        after_add = _after_add_func('PROJECT')
 
-    class VReflect(NodeBase):
-        @property
-        def bnode(self):
-            return 'ShaderNodeVectorMath'
-        
-        @property
-        def inputs(self):
-            return {
-                'vector1': BType.VECTOR,
-                'vector2': BType.VECTOR
-            }
+    class Reflect(_BinOp):
+        after_add = _after_add_func('REFLECT')
 
-        @property
-        def outputs(self):
-            return {
-                'vector': BType.VECTOR
-            }
-            
-    class VDot(NodeBase):
-        @property
-        def bnode(self):
-            return 'ShaderNodeVectorMath'
-        
-        @property
-        def inputs(self):
-            return {
-                'vector1': BType.VECTOR,
-                'vector2': BType.VECTOR
-            }
-
+    class Dot(_BinOp):
         @property
         def outputs(self):
             return {
                 'value': BType.VALUE
             }
-            
-        @property
-        def translation(self):
-            return {
-                'vector1': 'vector',
-                'vector2': 'vector_001'
-            }
-            
         after_add = _after_add_func('DOT_PRODUCT')
-    
-    class VDistance(NodeBase):
-        @property
-        def bnode(self):
-            return 'ShaderNodeVectorMath'
-        
-        @property
-        def inputs(self):
-            return {
-                'vector1': BType.VECTOR,
-                'vector2': BType.VECTOR
-            }
 
+    class Distance(_BinOp):
         @property
         def outputs(self):
             return {
-                'vector': BType.VALUE
+                'value': BType.VALUE
             }
-            
-    class VLength(NodeBase):
-        @property
-        def bnode(self):
-            return 'ShaderNodeVectorMath'
-        
-        @property
-        def inputs(self):
-            return {
-                'vector': BType.VECTOR
-            }
+        after_add = _after_add_func('DISTANCE')
 
+    class Length(_UnOp):
         @property
         def outputs(self):
             return {
-                'vector': BType.VALUE
+                'value': BType.VALUE
             }
-            
-    class VScale(NodeBase):
-        @property
-        def bnode(self):
-            return 'ShaderNodeVectorMath'
-        
+        after_add = _after_add_func('LENGTH')
+
+    class Scale(_VMathBase):
         @property
         def inputs(self):
             return {
                 'vector': BType.VECTOR,
                 'scale': BType.VALUE
             }
+        after_add = _after_add_func('SCALE')
 
-        @property
-        def outputs(self):
-            return {
-                'vector': BType.VECTOR
-            }
-            
-    class VNormalize(NodeBase):
-        @property
-        def bnode(self):
-            return 'ShaderNodeVectorMath'
-        
+    class Normalize(_UnOp):
+        after_add = _after_add_func('NORMALIZE')
+
+    class Abs(_UnOp):
+        after_add = _after_add_func('ABSOLUTE')
+
+    class Min(_BinOp):
+        after_add = _after_add_func('MINIMUM')
+
+    class Max(_BinOp):
+        after_add = _after_add_func('MAXIMUM')
+
+    class Floor(_UnOp):
+        after_add = _after_add_func('FLOOR')
+
+    class Ceil(_UnOp):
+        after_add = _after_add_func('CEIL')
+
+    class Fraction(_UnOp):
+        after_add = _after_add_func('FRACTION')
+
+    class Mod(_BinOp):
+        after_add = _after_add_func('MODULO')
+
+    class Wrap(_VMathBase):
         @property
         def inputs(self):
             return {
-                'vector': BType.VECTOR
+                'vector': BType.VECTOR,
+                'min': BType.VECTOR,
+                'max': BType.VECTOR
             }
-
         @property
-        def outputs(self):
+        def translation(self):
             return {
-                'vector': BType.VECTOR
+                'max': 'vector_001',
+                'min': 'vector_002'
             }
-            
-    class VAbs(NodeBase):
-        @property
-        def bnode(self):
-            return 'ShaderNodeVectorMath'
-        
+        after_add = _after_add_func('WRAP')
+
+    class Snap(_VMathBase):
         @property
         def inputs(self):
             return {
-                'vector': BType.VECTOR
+                'vector': BType.VECTOR,
+                'increment': BType.VECTOR
             }
+        @property
+        def translation(self):
+            return {
+                'increment': 'vector_001'
+            }
+        after_add = _after_add_func('SNAP')
 
-        @property
-        def outputs(self):
-            return {
-                'vector': BType.VECTOR
-            }
-            
-    class VMin(NodeBase):
-        @property
-        def bnode(self):
-            return 'ShaderNodeVectorMath'
-        
-        @property
-        def inputs(self):
-            return {
-                'vector1': BType.VECTOR,
-                'vector2': BType.VECTOR
-            }
+    class Sin(_UnOp):
+        after_add = _after_add_func('SINE')
 
-        @property
-        def outputs(self):
-            return {
-                'vector': BType.VECTOR
-            }
-            
-    class VMax(NodeBase):
-        @property
-        def bnode(self):
-            return 'ShaderNodeVectorMath'
-        
-        @property
-        def inputs(self):
-            return {
-                'vector1': BType.VECTOR,
-                'vector2': BType.VECTOR
-            }
+    class Cos(_UnOp):
+        after_add = _after_add_func('COSINE')
 
-        @property
-        def outputs(self):
-            return {
-                'vector': BType.VECTOR
-            }
+    class Tan(_UnOp):
+        after_add = _after_add_func('TANGENT')

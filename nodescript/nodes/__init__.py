@@ -9,6 +9,7 @@ from nodescript.nodes.shader_output import *
 from nodescript.nodes.shader_shader import *
 from nodescript.nodes.shader_texture import *
 from nodescript.nodes.shader_vector import *
+from nodescript.nodes.math import *
 from nodescript.nodes.vmath import *
 
 
@@ -38,6 +39,8 @@ class Vector(NodeBase):
         bnode.label = 'Vector'
         bnode.inputs[1].hide = True
         bnode.show_options = False
+        bnode.hide = True
+        
 
 
 def get_node_func(name: str, mode: GraphMode) -> NodeBase:
