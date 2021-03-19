@@ -3,12 +3,9 @@ from nodescript.type_system import *
 
 class NodeLexer(Lexer):
 
-    tokens = { 
-        ID, LET, SHADER, FUNC, AS,
-        TYPE,
-        TRUE, FALSE,
-        NUMBER,
-        STRING,
+    tokens = {
+        ID, LET, MODE, FUNC, AS,
+        TYPE, NUMBER, STRING, BOOL,
         EQUALS,
         COLON,
         COMMA,
@@ -20,8 +17,6 @@ class NodeLexer(Lexer):
 
     ignore = ' \t'
 
-    TRUE  = r'True'
-    FALSE = r'False'
     EQUALS  = r'='
     COLON   = r'\:'
     COMMA   = r'\,'
@@ -37,15 +32,24 @@ class NodeLexer(Lexer):
     def STRING(self, t):
         t.value = t.value.replace('"', '')
         return t
+    
+    @_(r'(True)|(False)')
+    def BOOL(self, t):
+        t.value = t.value == 'True'
+        return t
 
     @_(r'(Vector)|(Value)|(Color)|(Shader)|(Node)')
     def TYPE(self, t):
         t.value = BType(t.value)
         return t
 
+    @_(r'(shader)|(compositing)|(geometry)')
+    def MODE(self, t):
+        t.value = GraphMode(t.value)
+        return t
+
     ID = r'[a-zA-Z_][a-zA-Z0-9_]*'
     ID['let'] = LET
-    ID['shader'] = SHADER
     ID['func'] = FUNC
     ID['as'] = AS
 
@@ -59,3 +63,23 @@ class NodeLexer(Lexer):
     def error(self, t):
         print('Line %d: Bad character %r' % (self.lineno, t.value[0]))
         self.index += 1
+
+
+def lex(script: str) -> List[List[any]]:
+    lexer = NodeLexer()
+    toks = list(lexer.tokenize(script.strip()))
+    trees = []
+
+    tok_types = [t.type for t in toks]
+    while any(tt == 'FUNC' for tt in tok_types):
+        i = tok_types.index('FUNC')
+        j = i + tok_types[i:].index('}')
+    
+        trees.append(iter(toks[i-1:j+1]))
+        toks[i-1:j+1] = []
+        tok_types = [t.type for t in toks]
+    
+    if 'MODE' in toks:
+        trees.append(iter(toks))
+
+    return trees

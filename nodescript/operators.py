@@ -9,26 +9,26 @@ class NodescriptCompile(bpy.types.Operator):
     bl_options = {'UNDO'}
 
     def execute(self, context):
-        parser = parse.parse(bpy.context.edit_text.as_string().strip())
-        print('PARSE DONE')
-        print('Graph type:', parser.mode)
-        print('Tree Name:', parser.name)
-        for k, n in parser.nodes.items():
-            print(n, k)
-            for a, p in n.params.items():
-                print(' ', a, p)
+        for tree in parse.parse(bpy.context.edit_text.as_string().strip()):
+            print('PARSE DONE')
+            print('Graph type:', tree.mode, 'func' if tree.is_func else '')
+            print('Tree Name:', tree.name)
+            for k, n in tree.nodes.items():
+                print(n, k)
+                for a, p in n.params.items():
+                    print(' ', a, p)
 
-        mat_name = parser.name
-        mat = (bpy.data.materials.get(mat_name) or
-               bpy.data.materials.new(mat_name))
-        mat.use_nodes = True
+        # mat_name = parser.name
+        # mat = (bpy.data.materials.get(mat_name) or
+        #        bpy.data.materials.new(mat_name))
+        # mat.use_nodes = True
 
-        tree = mat.node_tree
-        for node in tree.nodes:
-            tree.nodes.remove(node)
+        # tree = mat.node_tree
+        # for node in tree.nodes:
+        #     tree.nodes.remove(node)
 
-        id_to_bnode = self.to_bnodes(parser.nodes, tree)
-        self.layout_nodes(parser.nodes, id_to_bnode)
+        # id_to_bnode = self.to_bnodes(parser.nodes, tree)
+        # self.layout_nodes(parser.nodes, id_to_bnode)
 
         return {'FINISHED'}
 

@@ -95,6 +95,27 @@ class LightFalloff(NodeBase):
             'linear': BType.VALUE,
             'constant': BType.VALUE
         }
+        
+class MixRGB(NodeBase):
+    @property
+    def bnode(self):
+        return 'ShaderNodeMixRGB'
+    
+    @property
+    def inputs(self):
+        return {
+            'color1': BType.COLOR,
+            'color2': BType.COLOR,
+            'fac': BType.VALUE,
+            'blend': BType.STRING,
+            'clamp': BType.BOOL
+        }
+
+    @property
+    def outputs(self):
+        return {
+            'color': BType.COLOR
+        }
 
 class RGBCurves(NodeBase):
     @property

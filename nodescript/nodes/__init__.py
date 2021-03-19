@@ -49,8 +49,3 @@ def get_node_func(name: str, mode: GraphMode) -> NodeBase:
         return cls
     except AttributeError:
         raise NameError(f'node \'{name}\' is not defined')
-
-
-if __name__ == '__main__':
-    v = Vector()
-    print(v.ntype)
