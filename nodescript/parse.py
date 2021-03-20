@@ -24,12 +24,13 @@ class NodeParser(Parser):
 
     @_('MODE ID tree_body')
     def start(self, p):
-        self.mode = p.MODE.value
+        self.mode = p.MODE
         self.name = p.ID
-        return p.statements
+        return p.tree_body
 
     @_('func_def')
     def start(self, p):
+        print('func_def')
         self.link_outputs()
         return p.func_def
 
@@ -169,8 +170,10 @@ class NodeParser(Parser):
 
     @_('expr AS TYPE')
     def cast_expr(self, p):
-        btype = p.TYPE
         expr = p.expr
+        if expr.btype == BType.NODE:
+            expr = expr.value.default()
+        btype = p.TYPE
         expr.btype = btype
         return expr
 
@@ -252,7 +255,7 @@ def parse(script):
     trees = lex.lex(script)
 
     for f in trees:
-        print()
         parser = NodeParser()
         parser.parse(f)
+        print(parser.name, parser.mode)
         yield parser.to_tree()

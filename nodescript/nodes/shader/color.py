@@ -1,7 +1,5 @@
-import bpy
-
-from . import NodeBase
-from ..type_system import *
+from .. import NodeBase
+from ...type_system import *
 
 
 class BrightContrast(NodeBase):

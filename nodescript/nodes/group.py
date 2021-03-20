@@ -27,7 +27,6 @@ class _GroupOutput(NodeBase):
     def __init__(self, outs, params):
         self._outputs = outs
         self._translation = {}
-        print('in _GroupOutput constr', params)
         super(_GroupOutput, self).__init__(params)
     
     @property

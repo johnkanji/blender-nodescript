@@ -2,13 +2,7 @@ import sys
 
 from nodescript.type_system import *
 from nodescript.nodes.Base import *
-from nodescript.nodes.shader_color import *
-from nodescript.nodes.shader_converter import *
-from nodescript.nodes.shader_input import *
-from nodescript.nodes.shader_output import *
-from nodescript.nodes.shader_shader import *
-from nodescript.nodes.shader_texture import *
-from nodescript.nodes.shader_vector import *
+from nodescript.nodes.shader import *
 from nodescript.nodes.math import *
 from nodescript.nodes.vmath import *
 
@@ -45,6 +39,7 @@ class Vector(NodeBase):
 
 def get_node_func(name: str, mode: GraphMode) -> NodeBase:
     try:
+        # print('get_node_func', __name__)
         cls = getattr(sys.modules[__name__], name)
         return cls
     except AttributeError:

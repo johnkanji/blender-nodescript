@@ -78,8 +78,8 @@ def lex(script: str) -> List[List[any]]:
         trees.append(iter(toks[i-1:j+1]))
         toks[i-1:j+1] = []
         tok_types = [t.type for t in toks]
-    
-    if 'MODE' in toks:
+
+    if 'MODE' in tok_types:
         trees.append(iter(toks))
 
     return trees

@@ -33,12 +33,12 @@ class NodescriptCompile(bpy.types.Operator):
             #         print(' ', a, p)
             print()
 
-        btree = self.setup_tree(tree)
-        if tree.is_func:
-            self.setup_group_inout(tree, btree)
+            btree = self.setup_tree(tree)
+            if tree.is_func:
+                self.setup_group_inout(tree, btree)
 
-        id_to_bnode = self.to_bnodes(tree.nodes, btree)
-        self.layout_nodes(tree.nodes, id_to_bnode)
+            id_to_bnode = self.to_bnodes(tree.nodes, btree)
+            self.layout_nodes(tree.nodes, id_to_bnode)
 
         return {'FINISHED'}
 

@@ -1,5 +1,5 @@
-from . import NodeBase
-from ..type_system import *
+from .. import NodeBase
+from ...type_system import *
 
 
 class Bump(NodeBase):
