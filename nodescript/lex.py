@@ -10,10 +10,11 @@ class NodeLexer(Lexer):
         COLON,
         COMMA,
         DOT,
-        RETURNS
+        RETURNS,
+        COMMENT
     }
 
-    literals = { '(', ')', '{', '}' }
+    literals = { '(', ')', '{', '}', '#' }
 
     ignore = ' \t'
 
@@ -22,6 +23,7 @@ class NodeLexer(Lexer):
     COMMA   = r'\,'
     DOT     = r'\.'
     RETURNS = r'->'
+    COMMENT = r'#[^\n]*\n'
 
     @_(r'\d+(\.\d+)?')
     def NUMBER(self, t):

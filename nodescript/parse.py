@@ -89,6 +89,10 @@ class NodeParser(Parser):
     @_('expr')
     def statement(self, p):
         return ('expr', p.expr)
+    
+    @_('COMMENT')
+    def statement(self, p):
+        pass
 
     @_('LET ID EQUALS expr',
        'LET name_typed EQUALS expr')
@@ -171,7 +175,7 @@ class NodeParser(Parser):
     @_('expr AS TYPE')
     def cast_expr(self, p):
         expr = p.expr
-        if expr.btype == BType.NODE:
+        if expr.btype == BType.NODE and p.TYPE != BType.NODE:
             expr = expr.value.default()
         btype = p.TYPE
         expr.btype = btype
