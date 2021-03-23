@@ -110,11 +110,11 @@ class NodeParser(Parser):
     @_('ID EQUALS expr')
     def assignment(self, p):
         name = p.ID
-        new_val = p.expr
         assert name in self.env
+        new_val = p.expr
         var = self.env[name]
 
-        if var.btype == new_val.btype:
+        if var.btype is None or var.btype == new_val.btype:
             var.value = new_val
         elif new_val.btype == BType.NODE:
             new_val = new_val.value.default()
@@ -123,6 +123,7 @@ class NodeParser(Parser):
         else:
             raise AttributeError()
 
+        self.env[name] = var
         return var
 
     @_('ID')
@@ -261,5 +262,4 @@ def parse(script):
     for f in trees:
         parser = NodeParser()
         parser.parse(f)
-        print(parser.name, parser.mode)
         yield parser.to_tree()
