@@ -5,130 +5,108 @@ from ...type_system import *
 class BrightContrast(NodeBase):
     @property
     def bnode(self):
-        return 'ShaderNodeBrightContrast'
-    
+        return "ShaderNodeBrightContrast"
+
     @property
     def inputs(self):
-        return {
-            'color': BType.COLOR,
-            'bright': BType.VALUE,
-            'contrast': BType.VALUE
-        }
+        return {"color": BType.COLOR, "bright": BType.VALUE, "contrast": BType.VALUE}
 
     @property
     def outputs(self):
-        return {
-            'color': BType.COLOR
-        }
+        return {"color": BType.COLOR}
+
 
 class Gamma(NodeBase):
     @property
     def inputs(self):
-        return {
-            'color': BType.COLOR,
-            'gamma': BType.VALUE
-        }
+        return {"color": BType.COLOR, "gamma": BType.VALUE}
 
     @property
     def outputs(self):
-        return {
-            'color': BType.COLOR
-        }
+        return {"color": BType.COLOR}
+
 
 class HueSatVal(NodeBase):
     @property
     def bnode(self):
-        return 'ShaderNodeHueSaturation'
-    
+        return "ShaderNodeHueSaturation"
+
     @property
     def inputs(self):
         return {
-            'hue': BType.VALUE,
-            'sat': BType.VALUE,
-            'value': BType.VALUE,
-            'fac' : BType.VALUE,
-            'color': BType.COLOR,
+            "hue": BType.VALUE,
+            "sat": BType.VALUE,
+            "value": BType.VALUE,
+            "fac": BType.VALUE,
+            "color": BType.COLOR,
         }
 
     @property
     def outputs(self):
-        return {
-            'color': BType.COLOR
-        }
+        return {"color": BType.COLOR}
+
 
 class Invert(NodeBase):
     @property
     def bnode(self):
-        return 'ShaderNodeInvert'
-    
+        return "ShaderNodeInvert"
+
     @property
     def inputs(self):
-        return {
-            'fac': BType.VALUE,
-            'color': BType.COLOR
-        }
+        return {"fac": BType.VALUE, "color": BType.COLOR}
 
     @property
     def outputs(self):
-        return {
-            'color': BType.COLOR
-        }
+        return {"color": BType.COLOR}
+
 
 class LightFalloff(NodeBase):
     @property
     def bnode(self):
-        return 'ShaderNodeLightFalloff'
-    
+        return "ShaderNodeLightFalloff"
+
     @property
     def inputs(self):
-        return {
-            'strength': BType.VALUE,
-            'smooth': BType.VALUE
-        }
+        return {"strength": BType.VALUE, "smooth": BType.VALUE}
 
     @property
     def outputs(self):
         return {
-            'quadratic': BType.VALUE,
-            'linear': BType.VALUE,
-            'constant': BType.VALUE
+            "quadratic": BType.VALUE,
+            "linear": BType.VALUE,
+            "constant": BType.VALUE,
         }
-        
+
+
 class MixRGB(NodeBase):
     @property
     def bnode(self):
-        return 'ShaderNodeMixRGB'
-    
+        return "ShaderNodeMixRGB"
+
     @property
     def inputs(self):
         return {
-            'color1': BType.COLOR,
-            'color2': BType.COLOR,
-            'fac': BType.VALUE,
-            'blend': BType.STRING,
-            'clamp': BType.BOOL
+            "color1": BType.COLOR,
+            "color2": BType.COLOR,
+            "fac": BType.VALUE,
+            "blend": BType.STRING,
+            "clamp": BType.BOOL,
         }
 
     @property
     def outputs(self):
-        return {
-            'color': BType.COLOR
-        }
+        return {"color": BType.COLOR}
+
 
 class RGBCurves(NodeBase):
     @property
     def bnode(self):
-        return 'ShaderNodeRGBCurve'
-    
+        return "ShaderNodeRGBCurve"
+
     @property
     def inputs(self):
-        return {
-            'fac': BType.VALUE,
-            'color': BType.COLOR
-        }
+        return {"fac": BType.VALUE, "color": BType.COLOR}
 
     @property
     def outputs(self):
-        return {
-            'color': BType.COLOR
-        }
+        return {"color": BType.COLOR}

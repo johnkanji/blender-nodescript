@@ -10,31 +10,24 @@ from nodescript.nodes.vmath import *
 class Vector(NodeBase):
     @property
     def bnode(self):
-        return 'ShaderNodeVectorMath'
-    
+        return "ShaderNodeVectorMath"
+
     @property
     def inputs(self):
-        return {
-            'x': BType.VALUE,
-            'y': BType.VALUE,
-            'z': BType.VALUE
-        }
-    
+        return {"x": BType.VALUE, "y": BType.VALUE, "z": BType.VALUE}
+
     @property
     def outputs(self):
-        return {
-            'vector': BType.VECTOR
-        }
-        
+        return {"vector": BType.VECTOR}
+
     def after_add(self, bnode):
-        bnode.inputs[0].default_value[0] = self.params['x'].value
-        bnode.inputs[0].default_value[1] = self.params['y'].value
-        bnode.inputs[0].default_value[2] = self.params['z'].value
-        bnode.label = 'Vector'
+        bnode.inputs[0].default_value[0] = self.params["x"].value
+        bnode.inputs[0].default_value[1] = self.params["y"].value
+        bnode.inputs[0].default_value[2] = self.params["z"].value
+        bnode.label = "Vector"
         bnode.inputs[1].hide = True
         bnode.show_options = False
         bnode.hide = True
-        
 
 
 def get_node_func(name: str, mode: GraphMode) -> NodeBase:
@@ -43,4 +36,4 @@ def get_node_func(name: str, mode: GraphMode) -> NodeBase:
         cls = getattr(sys.modules[__name__], name)
         return cls
     except AttributeError:
-        raise NameError(f'node \'{name}\' is not defined')
+        raise NameError(f"node '{name}' is not defined")

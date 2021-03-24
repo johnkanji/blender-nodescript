@@ -5,32 +5,29 @@ from ...type_system import *
 class AOVOutput(NodeBase):
     @property
     def bnode(self):
-        return 'ShaderNodeOutputAOV'
-    
+        return "ShaderNodeOutputAOV"
+
     @property
     def inputs(self):
-        return {
-            'name': BType.STRING,
-            'color': BType.COLOR,
-            'value': BType.VALUE
-        }
+        return {"name": BType.STRING, "color": BType.COLOR, "value": BType.VALUE}
 
     @property
     def outputs(self):
         return {}
 
+
 class MaterialOutput(NodeBase):
     @property
     def bnode(self):
-        return 'ShaderNodeOutputMaterial'
-    
+        return "ShaderNodeOutputMaterial"
+
     @property
     def inputs(self):
         return {
-            'target': BType.STRING,
-            'surface': BType.SHADER,
-            'volume': BType.SHADER,
-            'displacement': BType.VECTOR
+            "target": BType.STRING,
+            "surface": BType.SHADER,
+            "volume": BType.SHADER,
+            "displacement": BType.VECTOR,
         }
 
     @property

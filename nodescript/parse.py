@@ -20,27 +20,28 @@ class NodeParser(Parser):
         # Load namespaces
         # TODO: Should be based on mode
         for cls in Namespace.__subclasses__():
-            self.env[cls.__name__] = Variable(cls.__name__, Value(cls(), BType.NAMESPACE), BType.NAMESPACE)
+            self.env[cls.__name__] = Variable(
+                cls.__name__, Value(cls(), BType.NAMESPACE), BType.NAMESPACE
+            )
 
-    @_('MODE ID tree_body')
+    @_("MODE ID tree_body")
     def start(self, p):
         self.mode = p.MODE
         self.name = p.ID
         return p.tree_body
 
-    @_('func_def')
+    @_("func_def")
     def start(self, p):
-        print('func_def')
+        print("func_def")
         self.link_outputs()
         return p.func_def
 
-
     # FUNCTIONS
-    @_('func_signature tree_body')
+    @_("func_signature tree_body")
     def func_def(self, p):
         pass
 
-    @_('MODE FUNC ID args RETURNS args')
+    @_("MODE FUNC ID args RETURNS args")
     def func_signature(self, p):
         self.mode = p.MODE
         self.name = p.ID
@@ -53,49 +54,47 @@ class NodeParser(Parser):
     def args(self, p):
         return p.args_list
 
-    @_('name_typed')
+    @_("name_typed")
     def args_list(self, p):
-        return { p.name_typed[0]: p.name_typed[1] }
+        return {p.name_typed[0]: p.name_typed[1]}
 
-    @_('name_typed COMMA args_list')
+    @_("name_typed COMMA args_list")
     def args_list(self, p):
-        return { p.name_typed[0]: p.name_typed[1], **p.args_list }
+        return {p.name_typed[0]: p.name_typed[1], **p.args_list}
 
-    @_('empty')
+    @_("empty")
     def args_list(self, p):
         return {}
-
 
     @_('"{" statements "}"')
     def tree_body(self, p):
         return p.statements
 
-    @_('statement statements')
+    @_("statement statements")
     def statements(self, p):
         return [p.statement] + p.statements
 
-    @_('statement')
+    @_("statement")
     def statements(self, p):
         return [p.statement]
 
-    @_('declaration')
+    @_("declaration")
     def statement(self, p):
-        return ('let', p.declaration)
+        return ("let", p.declaration)
 
-    @_('assignment')
+    @_("assignment")
     def statement(self, p):
-        return ('assign', p.assignment)
+        return ("assign", p.assignment)
 
-    @_('expr')
+    @_("expr")
     def statement(self, p):
-        return ('expr', p.expr)
-    
-    @_('COMMENT')
+        return ("expr", p.expr)
+
+    @_("COMMENT")
     def statement(self, p):
         pass
 
-    @_('LET ID EQUALS expr',
-       'LET name_typed EQUALS expr')
+    @_("LET ID EQUALS expr", "LET name_typed EQUALS expr")
     def declaration(self, p):
         try:
             name, btype = p[1]
@@ -107,7 +106,7 @@ class NodeParser(Parser):
         self.env[name] = var
         return var
 
-    @_('ID EQUALS expr')
+    @_("ID EQUALS expr")
     def assignment(self, p):
         name = p.ID
         assert name in self.env
@@ -126,38 +125,38 @@ class NodeParser(Parser):
         self.env[name] = var
         return var
 
-    @_('ID')
+    @_("ID")
     def expr(self, p):
         if p.ID in self.env:
             return self.env[p.ID].value
         else:
             return Value(get_node_func(p.ID, self.mode), BType.NODE_FUNC)
 
-    @_('TYPE')
+    @_("TYPE")
     def expr(self, p):
-            return Value(get_node_func(p.TYPE.value, self.mode), BType.NODE_FUNC)
+        return Value(get_node_func(p.TYPE.value, self.mode), BType.NODE_FUNC)
 
-    @_('NUMBER')
+    @_("NUMBER")
     def expr(self, p):
         return Value(p.NUMBER, BType.VALUE)
 
-    @_('STRING')
+    @_("STRING")
     def expr(self, p):
         return Value(p.STRING, BType.STRING)
 
-    @_('BOOL')
+    @_("BOOL")
     def expr(self, p):
         return Value(p.BOOL, BType.BOOL)
 
-    @_('node_expr')
+    @_("node_expr")
     def expr(self, p):
         return p.node_expr
 
-    @_('accessor_expr')
+    @_("accessor_expr")
     def expr(self, p):
         return p.accessor_expr
 
-    @_('cast_expr')
+    @_("cast_expr")
     def expr(self, p):
         return p.cast_expr
 
@@ -168,12 +167,12 @@ class NodeParser(Parser):
         self.nodes[new.id] = new
         return Value(new, BType.NODE)
 
-    @_('expr DOT ID')
+    @_("expr DOT ID")
     def accessor_expr(self, p):
         assert p.expr.btype == BType.NODE or p.expr.btype == BType.NAMESPACE
         return p.expr.value.access(p.ID)
 
-    @_('expr AS TYPE')
+    @_("expr AS TYPE")
     def cast_expr(self, p):
         expr = p.expr
         if expr.btype == BType.NODE and p.TYPE != BType.NODE:
@@ -182,54 +181,52 @@ class NodeParser(Parser):
         expr.btype = btype
         return expr
 
-
-    @_('empty')
+    @_("empty")
     def params_list(self, p):
         return []
 
-    @_('pos')
+    @_("pos")
     def params_list(self, p):
         return [p.pos]
 
-    @_('pos COMMA params_list')
+    @_("pos COMMA params_list")
     def params_list(self, p):
         return [p.pos] + p.params_list
 
-    @_('pos COMMA named_params_list')
+    @_("pos COMMA named_params_list")
     def params_list(self, p):
         return [p.pos]
 
-    @_('named_params_list')
+    @_("named_params_list")
     def params_list(self, p):
         return p.named_params_list
 
-    @_('named')
+    @_("named")
     def named_params_list(self, p):
         return [p.named]
 
-    @_('named COMMA named_params_list')
+    @_("named COMMA named_params_list")
     def named_params_list(self, p):
         return [p.named] + p.named_params_list
 
-    @_('ID COLON expr')
+    @_("ID COLON expr")
     def named(self, p):
         return (p.ID, p.expr)
 
-    @_('expr')
+    @_("expr")
     def pos(self, p):
         return (None, p.expr)
 
-
-    @_('ID COLON TYPE')
+    @_("ID COLON TYPE")
     def name_typed(self, p):
         return (p.ID, p.TYPE)
 
-    @_('')
+    @_("")
     def empty(self, p):
         pass
 
     def error(self, p):
-        print('error')
+        print("error")
         print(p)
         print(self.state, self.statestack)
         for s in self.symstack:
@@ -246,10 +243,10 @@ class NodeParser(Parser):
         assert self.is_func == True
         for out in outs:
             self.env[out] = Variable(out, None, outs[out])
-            
+
     def link_outputs(self):
         assert self.is_func == True
-        new = _GroupOutput(self.outputs, [ (k, self.env[k].value) for k in self.outputs ])
+        new = _GroupOutput(self.outputs, [(k, self.env[k].value) for k in self.outputs])
         self.nodes[new.id] = new
 
     def to_tree(self):

@@ -5,21 +5,21 @@ from typing import List
 
 
 class GraphMode(Enum):
-    SHADER = 'shader'
-    COMPOSITING = 'compositing'
-    GEOMETRY = 'geometry'
+    SHADER = "shader"
+    COMPOSITING = "compositing"
+    GEOMETRY = "geometry"
 
 
 class BType(Enum):
-    VALUE = 'Value'
-    VECTOR = 'Vector'
-    COLOR = 'Color'
-    NODE = 'Node'
-    STRING = 'String'
-    BOOL = 'Boolean'
-    SHADER = 'Shader'
-    NODE_FUNC = 'NodeFunction'
-    NAMESPACE = 'Namespace'
+    VALUE = "Value"
+    VECTOR = "Vector"
+    COLOR = "Color"
+    NODE = "Node"
+    STRING = "String"
+    BOOL = "Boolean"
+    SHADER = "Shader"
+    NODE_FUNC = "NodeFunction"
+    NAMESPACE = "Namespace"
 
 
 @dataclass
@@ -29,7 +29,7 @@ class Variable:
     btype: BType = None
 
     def __repr__(self):
-        return f'Var({self.name}, {self.value}, {self.btype})'
+        return f"Var({self.name}, {self.value}, {self.btype})"
 
 
 @dataclass
@@ -39,8 +39,8 @@ class Value:
     node_id: UUID = None
 
     def __repr__(self):
-        nid = f', {self.node_id }' if self.node_id is not None else ''
-        return f'Value({self.value}, {self.btype}{nid})'
+        nid = f", {self.node_id }" if self.node_id is not None else ""
+        return f"Value({self.value}, {self.btype}{nid})"
 
 
 @dataclass

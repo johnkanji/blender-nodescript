@@ -13,7 +13,7 @@ class NodeBase(ABC):
     @property
     def ntype(self):
         return type(self).__name__
-    
+
     @property
     @abstractmethod
     def bnode(self):
@@ -46,20 +46,20 @@ class NodeBase(ABC):
                 v = v.value.default()
             if k is None:
                 k = inputs[i][0]
-            assert v.btype == self.inputs[k],\
-                f'invalid type for parameter \'{k}\' {v.btype}'
+            assert (
+                v.btype == self.inputs[k]
+            ), f"invalid type for parameter '{k}' {v.btype}"
             args[k] = v
         self.params = args
 
     def access(self, name):
-        assert name in self.outputs.keys(),\
-            f'node {self.ntype} has no output {name}'
+        assert name in self.outputs.keys(), f"node {self.ntype} has no output {name}"
         return Value(name, self.outputs[name], self.id)
-    
+
     def default(self):
         name = list(self.outputs.keys())[0]
         return Value(name, self.outputs[name], self.id)
-    
+
     def translate_name(self, name):
         try:
             translated_name = self.translation[name]
@@ -68,18 +68,20 @@ class NodeBase(ABC):
         return translated_name
 
     def __repr__(self):
-        return f'Node({self.ntype})'
-    
+        return f"Node({self.ntype})"
+
 
 class Namespace(ABC):
     @property
     def ntype(self):
         return type(self).__name__
-    
+
     def access(self, name):
-        assert name[0] != '_' and hasattr(self, name),\
-            f'namespace {self.ntype} has no output {name}'
+        assert name[0] != "_" and hasattr(
+            self, name
+        ), f"namespace {self.ntype} has no output {name}"
         attr = getattr(self, name)
-        assert isclass(attr) and issubclass(attr, NodeBase),\
-            f'namespace {self.ntype} has no output {name}'
+        assert isclass(attr) and issubclass(
+            attr, NodeBase
+        ), f"namespace {self.ntype} has no output {name}"
         return Value(attr, BType.NODE_FUNC)

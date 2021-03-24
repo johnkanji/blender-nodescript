@@ -6,31 +6,32 @@ from nodescript.type_system import BType, GraphMode, Tree
 
 class NodescriptCompile(bpy.types.Operator):
     """Compile Nodescript into Blender NodeTree"""
+
     bl_idname = "nodescript.compile"
     bl_label = "Compile"
-    bl_options = {'UNDO'}
+    bl_options = {"UNDO"}
 
     MODE_TO_TYPE = {
-        GraphMode.SHADER: 'ShaderNodeTree',
-        GraphMode.COMPOSITING: 'CompositorNodeTree'
+        GraphMode.SHADER: "ShaderNodeTree",
+        GraphMode.COMPOSITING: "CompositorNodeTree",
     }
 
     BTYPE_TO_INOUT = {
-        BType.VALUE: 'NodeSocketFloat',
-        BType.VECTOR: 'NodeSocketVector',
-        BType.COLOR: 'NodeSocketColor',
-        BType.SHADER: 'NodeSocketShader',
+        BType.VALUE: "NodeSocketFloat",
+        BType.VECTOR: "NodeSocketVector",
+        BType.COLOR: "NodeSocketColor",
+        BType.SHADER: "NodeSocketShader",
     }
 
     def execute(self, context):
         for tree in parse.parse(bpy.context.edit_text.as_string().strip()):
-            print('PARSE DONE')
-            print('Graph type:', tree.mode, 'func' if tree.is_func else '')
-            print('Tree Name:', tree.name)
-            # for k, n in tree.nodes.items():
-            #     print(n, k)
-            #     for a, p in n.params.items():
-            #         print(' ', a, p)
+            print("PARSE DONE")
+            print("Graph type:", tree.mode, "func" if tree.is_func else "")
+            print("Tree Name:", tree.name)
+            for k, n in tree.nodes.items():
+                print(n, k)
+                for a, p in n.params.items():
+                    print(" ", a, p)
             print()
 
             btree = self.setup_tree(tree)
@@ -40,16 +41,18 @@ class NodescriptCompile(bpy.types.Operator):
             id_to_bnode = self.to_bnodes(tree.nodes, btree)
             self.layout_nodes(tree.nodes, id_to_bnode)
 
-        return {'FINISHED'}
+        return {"FINISHED"}
 
     def setup_tree(self, tree: Tree):
         if tree.is_func:
-            btree = (bpy.data.node_groups.get(tree.name) or
-                    bpy.data.node_groups.new(tree.name, self.MODE_TO_TYPE[tree.mode]))
+            btree = bpy.data.node_groups.get(tree.name) or bpy.data.node_groups.new(
+                tree.name, self.MODE_TO_TYPE[tree.mode]
+            )
         else:
             if tree.mode == GraphMode.SHADER:
-                obj = (bpy.data.materials.get(tree.name) or
-                       bpy.data.materials.new(tree.name))
+                obj = bpy.data.materials.get(tree.name) or bpy.data.materials.new(
+                    tree.name
+                )
             elif tree.mode == GraphMode.COMPOSITING:
                 obj = bpy.context.scene
             obj.use_nodes = True
@@ -60,13 +63,13 @@ class NodescriptCompile(bpy.types.Operator):
         return btree
 
     def setup_group_inout(self, tree, btree):
-        inp = next(filter(lambda n: n.bnode == 'NodeGroupInput', tree.nodes.values()))
+        inp = next(filter(lambda n: n.bnode == "NodeGroupInput", tree.nodes.values()))
         btree.inputs.clear()
         for p, t in inp._inputs.items():
             sock = btree.inputs.new(self.BTYPE_TO_INOUT[t], p)
             inp._translation[p] = sock.identifier.lower()
 
-        out = next(filter(lambda n: n.bnode == 'NodeGroupOutput', tree.nodes.values()))
+        out = next(filter(lambda n: n.bnode == "NodeGroupOutput", tree.nodes.values()))
         btree.outputs.clear()
         for p, t in out._outputs.items():
             sock = btree.outputs.new(self.BTYPE_TO_INOUT[t], p)
@@ -78,7 +81,7 @@ class NodescriptCompile(bpy.types.Operator):
         id_to_bnode = {}
         for node in nodes.values():
             bnode = bnodes.new(node.bnode)
-            if hasattr(node, 'after_add'):
+            if hasattr(node, "after_add"):
                 node.after_add(bnode)
             id_to_bnode[node.id] = bnode
 
@@ -107,7 +110,7 @@ class NodescriptCompile(bpy.types.Operator):
                 if p.node_id:
                     node.layer = max(node.layer, nodes[p.node_id].layer + 1)
 
-        bpy.ops.wm.redraw_timer(type='DRAW_WIN_SWAP', iterations=1)
+        bpy.ops.wm.redraw_timer(type="DRAW_WIN_SWAP", iterations=1)
 
         nlayers = max([n.layer for n in nodes.values()])
         for i in range(nlayers + 1):
@@ -115,12 +118,12 @@ class NodescriptCompile(bpy.types.Operator):
             for j in range(len(layer_nodes)):
                 n = layer_nodes[j]
                 b = bnodes[n.id]
-                xpos = i* (140 + HSPACE)
+                xpos = i * (140 + HSPACE)
                 if j == 0:
                     b.location = (xpos, 0)
                 else:
-                    prev = bnodes[layer_nodes[j-1].id]
-                    prev_bottom = prev.location[1] - prev.dimensions[1]/2
+                    prev = bnodes[layer_nodes[j - 1].id]
+                    prev_bottom = prev.location[1] - prev.dimensions[1] / 2
                     b.location = (xpos, prev_bottom - VSPACE)
 
     def get_node_socket(self, sockets, name):
