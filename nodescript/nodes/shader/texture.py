@@ -1,3 +1,5 @@
+import bpy
+
 from .. import NodeBase
 from ...type_system import *
 
@@ -108,6 +110,7 @@ class Image(NodeBase):
     @property
     def inputs(self):
         return {
+            "image": BType.STRING,
             "interpolation": BType.STRING,
             "projection": BType.STRING,
             "extension": BType.STRING,
@@ -117,6 +120,9 @@ class Image(NodeBase):
     @property
     def outputs(self):
         return {"color": BType.COLOR, "alpha": BType.VALUE}
+
+    def after_add(self, bnode):
+        bnode.image = bpy.data.images.get(self.params["image"].value)
 
 
 class Magic(NodeBase):
