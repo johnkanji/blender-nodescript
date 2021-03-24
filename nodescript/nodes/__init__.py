@@ -1,39 +1,25 @@
 import sys
+import bpy
+from functools import partial
 
 from nodescript.type_system import *
 from nodescript.nodes.Base import *
+from nodescript.nodes.types import *
 from nodescript.nodes.shader import *
 from nodescript.nodes.math import *
 from nodescript.nodes.vmath import *
+from nodescript.nodes.group import *
 
 
-class Vector(NodeBase):
-    @property
-    def bnode(self):
-        return "ShaderNodeVectorMath"
-
-    @property
-    def inputs(self):
-        return {"x": BType.VALUE, "y": BType.VALUE, "z": BType.VALUE}
-
-    @property
-    def outputs(self):
-        return {"vector": BType.VECTOR}
-
-    def after_add(self, bnode):
-        bnode.inputs[0].default_value[0] = self.params["x"].value
-        bnode.inputs[0].default_value[1] = self.params["y"].value
-        bnode.inputs[0].default_value[2] = self.params["z"].value
-        bnode.label = "Vector"
-        bnode.inputs[1].hide = True
-        bnode.show_options = False
-        bnode.hide = True
-
-
-def get_node_func(name: str, mode: GraphMode) -> NodeBase:
-    try:
-        # print('get_node_func', __name__)
-        cls = getattr(sys.modules[__name__], name)
-        return cls
-    except AttributeError:
-        raise NameError(f"node '{name}' is not defined")
+def get_node_func(name: str, mode: GraphMode):
+    for module_name in ["types", "group", mode.value]:
+        module = __name__ + "." + module_name
+        if hasattr(sys.modules[module], name):
+            cls = getattr(sys.modules[module], name)
+            return partial(cls, mode=mode)
+    for g in bpy.data.node_groups:
+        print(name, g.name, mode.value, g.type.lower())
+        if g.name == name and g.type.lower() == mode.value:
+            f = Group.from_name(name, mode)
+            print(f)
+            return f

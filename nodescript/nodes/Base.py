@@ -33,9 +33,10 @@ class NodeBase(ABC):
     def translation(self) -> Dict[str, str]:
         pass
 
-    def __init__(self, params=None):
+    def __init__(self, params=None, mode=None):
         self.id = uuid4()
         self.layer = 0
+        self.mode = mode
 
         if params is None:
             params = {}

@@ -1,7 +1,13 @@
 import bpy
+from enum import Enum
 from . import parse
 
 from nodescript.type_system import BType, GraphMode, Tree
+
+
+class SocketType(Enum):
+    IN = 0
+    OUT = 1
 
 
 class NodescriptCompile(bpy.types.Operator):
@@ -86,14 +92,14 @@ class NodescriptCompile(bpy.types.Operator):
             id_to_bnode[node.id] = bnode
 
             for name, value in node.params.items():
-                translated_name = node.translate_name(name)
-                inp_sock = self.get_node_socket(bnode.inputs, translated_name)
+                inp_sock = self.get_node_socket(node, bnode, name, SocketType.IN)
 
                 if value.node_id:
                     node_out = nodes[value.node_id]
                     bnode_out = id_to_bnode[value.node_id]
-                    translated_name = node_out.translate_name(value.value)
-                    out_sock = self.get_node_socket(bnode_out.outputs, translated_name)
+                    out_sock = self.get_node_socket(
+                        node_out, bnode_out, value.value, SocketType.OUT
+                    )
                     links.new(inp_sock, out_sock)
 
                 elif inp_sock:
@@ -126,7 +132,9 @@ class NodescriptCompile(bpy.types.Operator):
                     prev_bottom = prev.location[1] - prev.dimensions[1] / 2
                     b.location = (xpos, prev_bottom - VSPACE)
 
-    def get_node_socket(self, sockets, name):
+    def get_node_socket(self, node, bnode, name: str, inout: SocketType):
+        sockets = bnode.inputs if inout == SocketType.IN else bnode.outputs
+        tname = node.translate_name(name)
         for sock in sockets:
-            if sock.identifier.lower() == name:
+            if sock.identifier.lower() == tname:
                 return sock

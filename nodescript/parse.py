@@ -24,15 +24,18 @@ class NodeParser(Parser):
                 cls.__name__, Value(cls(), BType.NAMESPACE), BType.NAMESPACE
             )
 
-    @_("MODE ID tree_body")
+    @_("MODE seen_mode ID tree_body")
     def start(self, p):
         self.mode = p.MODE
         self.name = p.ID
         return p.tree_body
 
+    @_("")
+    def seen_mode(self, p):
+        self.mode = p[-1]
+
     @_("func_def")
     def start(self, p):
-        print("func_def")
         self.link_outputs()
         return p.func_def
 
