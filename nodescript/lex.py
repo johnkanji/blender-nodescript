@@ -22,7 +22,7 @@ class NodeLexer(Lexer):
         COMMENT,
     }
 
-    literals = {"(", ")", "{", "}", "#"}
+    literals = {"(", ")", "{", "}", "#", "[", "]"}
 
     ignore = " \t"
 

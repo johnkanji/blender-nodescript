@@ -151,6 +151,10 @@ class NodeParser(Parser):
     def expr(self, p):
         return Value(p.BOOL, BType.BOOL)
 
+    @_("vector_literal")
+    def expr(self, p):
+        return p.vector_literal
+
     @_("node_expr")
     def expr(self, p):
         return p.node_expr
@@ -162,6 +166,10 @@ class NodeParser(Parser):
     @_("cast_expr")
     def expr(self, p):
         return p.cast_expr
+
+    @_('"[" NUMBER COMMA NUMBER COMMA NUMBER "]"')
+    def vector_literal(self, p):
+        return Value([p.NUMBER0, p.NUMBER1, p.NUMBER2], BType.VECTOR)
 
     @_('expr "(" params_list ")"')
     def node_expr(self, p):
