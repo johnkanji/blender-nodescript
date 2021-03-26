@@ -22,7 +22,7 @@ class NodeLexer(Lexer):
         COMMENT,
     }
 
-    literals = {"(", ")", "{", "}", "#", "[", "]"}
+    literals = {"(", ")", "{", "}", "#", "[", "]", "+", "-", "*", "/", "@"}
 
     ignore = " \t"
 
@@ -31,6 +31,7 @@ class NodeLexer(Lexer):
     COMMA = r"\,"
     DOT = r"\."
     RETURNS = r"->"
+    POW = r"\*\*"
     COMMENT = r"#[^\n]*\n"
 
     @_(r"\d+(\.\d+)?")
