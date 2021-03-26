@@ -23,24 +23,42 @@ class BType(Enum):
 
 
 @dataclass
-class Variable:
-    name: str
-    value: any
-    btype: BType = None
-
-    def __repr__(self):
-        return f"Var({self.name}, {self.value}, {self.btype})"
-
-
-@dataclass
 class Value:
     value: any
     btype: BType
     node_id: UUID = None
 
+    def get_value(self):
+        return self
+
+    def get_type(self):
+        if self.btype == BType.NODE:
+            return self.value.default().btype
+        else:
+            return self.btype
+
     def __repr__(self):
         nid = f", {self.node_id }" if self.node_id is not None else ""
         return f"Value({self.value}, {self.btype}{nid})"
+
+
+@dataclass
+class Variable:
+    name: str
+    value: Value
+    btype: BType = None
+
+    def get_value(self):
+        return self.value
+
+    def get_type(self):
+        if self.btype is not None:
+            return self.btype
+        else:
+            return self.value.get_type()
+
+    def __repr__(self):
+        return f"Var({self.name}, {self.value}, {self.btype})"
 
 
 @dataclass

@@ -7,8 +7,14 @@ from nodescript.type_system import *
 
 
 class NodeParser(Parser):
-    # debugfile = 'parser.out'
+    debugfile = "parser.out"
     tokens = lex.NodeLexer.tokens
+
+    precedence = (
+        ("left", "+", "-"),
+        ("left", "*", "/", "@"),
+        ("right", UMINUS),
+    )
 
     def __init__(self):
         self.env = {}
@@ -232,16 +238,52 @@ class NodeParser(Parser):
     def name_typed(self, p):
         return (p.ID, p.TYPE)
 
+    # MARK:  Operators
+    #
+    @_("expr '+' expr")
+    def expr(self, p):
+        return self.create_op("Add", p.expr0, p.expr1)
+
+    @_("expr '-' expr")
+    def expr(self, p):
+        return self.create_op("Sub", p.expr0, p.expr1)
+
+    @_("expr '*' expr")
+    def expr(self, p):
+        return self.create_op("Mul", p.expr0, p.expr1)
+
+    @_("expr '/' expr")
+    def expr(self, p):
+        return self.create_op("Div", p.expr0, p.expr1)
+
+    @_("expr '@' expr")
+    def expr(self, p):
+        return self.create_op("Dot", p.expr0, p.expr1)
+
+    @_("'(' expr ')'")
+    def expr(self, p):
+        return p.expr
+
+    @_("'-' expr %prec UMINUS")
+    def expr(self, p):
+        if p.expr.get_type() == BType.VECTOR:
+            lhs = Value([0, 0, 0], BType.VECTOR)
+        elif p.expr.get_type() == BType.VALUE:
+            lhs = Value(0, BType.VALUE)
+        else:
+            raise TypeError
+        return self.create_op("Sub", lhs, p.expr)
+
     @_("")
     def empty(self, p):
         pass
 
     def error(self, p):
         print("error")
-        print(p)
-        print(self.state, self.statestack)
-        for s in self.symstack:
-            print(s)
+        print(
+            f'{self.cls_module}.{self.cls_name}:{getattr(p,"lineno","")}: '
+            f'Syntax error at {getattr(p,"value","EOC")}'
+        )
 
     def setup_inputs(self, inps):
         assert self.is_func == True
@@ -259,6 +301,28 @@ class NodeParser(Parser):
         assert self.is_func == True
         new = _GroupOutput(self.outputs, [(k, self.env[k].value) for k in self.outputs])
         self.nodes[new.id] = new
+
+    def create_op(self, op, lhs, rhs):
+        if lhs.get_type() == BType.VECTOR and rhs.get_type() == BType.VECTOR:
+            nspace = "VMath"
+        elif lhs.get_type() == BType.VECTOR or rhs.get_type() == BType.VECTOR:
+            nspace = "VMath"
+            if lhs.get_type() == BType.VALUE:
+                lhs.get_value().btype = BType.VECTOR
+            elif rhs.get_type() == BType.VALUE:
+                rhs.get_value().btype = BType.VECTOR
+            else:
+                raise TypeError
+        elif lhs.get_type() == BType.VALUE and rhs.get_type() == BType.VALUE:
+            if op == "Dot":
+                raise TypeError
+            nspace = "Math"
+        else:
+            raise TypeError
+        params = [(None, lhs), (None, rhs)]
+        new = self.env[nspace].value.value.access(op).value(params)
+        self.nodes[new.id] = new
+        return Value(new, BType.NODE)
 
     def to_tree(self):
         return Tree(self.name, self.mode, self.is_func, self.nodes)
